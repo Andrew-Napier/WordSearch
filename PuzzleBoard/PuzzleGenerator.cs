@@ -74,7 +74,7 @@ namespace PuzzleBoard
                     }
                     done = true;
                 }
-                else if ((correctLength < 9 && correctLength > 4) || wordsToFind.Count > 17)
+                else if ((correctLength < 11 && correctLength > 4) || wordsToFind.Count > 17)
                 {
                     done = wordGenerator.IsWordAvailable(correctLength);
                     if (done)
@@ -85,13 +85,13 @@ namespace PuzzleBoard
                 if (!done)
                 {
                     bool canStillWork = false;
-                    for(int i = 5; i < 9; i++)
+                    for(int i = 4; i < 11; i++)
                     {
                         canStillWork |= (wordGenerator.IsWordAvailable(i));
                     }
                     if (!canStillWork)
                     {
-                        lettersGrid.Display();
+                        Console.WriteLine($"\nWords: {wordsToFind.Count} Blanks Remaining: {correctLength} Rejected Words: {rejectedWordsCount}");
                         throw new Exception("failed to word...");
                     }
                 }
