@@ -1,0 +1,29 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordChooser", "WordChooser\WordChooser.csproj", "{3586F8AE-EA5B-438E-A42C-97D1140BE9C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestHarness", "TestHarness\TestHarness.csproj", "{616F3B53-C949-4799-88F4-5E0D3948C4D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuzzleBoard", "PuzzleBoard\PuzzleBoard.csproj", "{9BC35BF1-1523-4511-A116-BC6024BC41DC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3586F8AE-EA5B-438E-A42C-97D1140BE9C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3586F8AE-EA5B-438E-A42C-97D1140BE9C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3586F8AE-EA5B-438E-A42C-97D1140BE9C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3586F8AE-EA5B-438E-A42C-97D1140BE9C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{616F3B53-C949-4799-88F4-5E0D3948C4D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{616F3B53-C949-4799-88F4-5E0D3948C4D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{616F3B53-C949-4799-88F4-5E0D3948C4D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{616F3B53-C949-4799-88F4-5E0D3948C4D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9BC35BF1-1523-4511-A116-BC6024BC41DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BC35BF1-1523-4511-A116-BC6024BC41DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BC35BF1-1523-4511-A116-BC6024BC41DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BC35BF1-1523-4511-A116-BC6024BC41DC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

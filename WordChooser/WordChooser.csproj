@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LightWebNetScraper" Version="0.0.2" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.21" />
+    <PackageReference Include="WeCantSpell.Hunspell" Version="3.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="SpellCheck\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="SpellCheck\en_GB.dic">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SpellCheck\en_GB.aff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>
