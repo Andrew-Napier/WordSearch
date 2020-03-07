@@ -31,16 +31,9 @@ namespace PuzzleBoard
             var done = false;
             int rejectedWordsCount = 0;
             string[] title = wordGenerator.GetTitle().ToArray();
-            var letters = new List<char>();
-            foreach(var w in title)
-            {
-                foreach (var l in w)
-                    letters.Add(l);
-            }
             var wordsToFind = new List<string>();
             while (!done)
             {
-                Console.Write($"\rFitted words: {wordsToFind.Count}. Failed Count: {rejectedWordsCount}");
                 int wordLength = random.PickWeightedWordLength();
                 if (!wordGenerator.IsWordAvailable(wordLength)) continue;
 
@@ -66,30 +59,16 @@ namespace PuzzleBoard
                 }
 
                 var correctLength = lettersGrid.BlanksRemaining;
-                if (correctLength == letters.Count)
-                {
-                    foreach (var w in title)
-                    {
-                        lettersGrid = lettersGrid.BlatWord(w);
-                    }
-                    done = true;
-                }
-                else if ((correctLength < 11 && correctLength > 4) || wordsToFind.Count > 17)
+                Console.Write($"\rFitted words: {wordsToFind.Count}. Failed Count: {rejectedWordsCount}. Remaining blanks: {correctLength}  ");
+                if (correctLength <= wordGenerator.MaxLengthOfWord() &&
+                    wordsToFind.Count > 15)
                 {
                     done = wordGenerator.IsWordAvailable(correctLength);
                     if (done)
                     {
                         lettersGrid.BlatWord(wordGenerator.PopWordOfLength(correctLength));
                     }
-                }
-                if (!done)
-                {
-                    bool canStillWork = false;
-                    for(int i = 4; i < 11; i++)
-                    {
-                        canStillWork |= (wordGenerator.IsWordAvailable(i));
-                    }
-                    if (!canStillWork)
+                    else if (correctLength < 4 || wordGenerator.IsEmpty())
                     {
                         Console.WriteLine($"\nWords: {wordsToFind.Count} Blanks Remaining: {correctLength} Rejected Words: {rejectedWordsCount}");
                         throw new Exception("failed to word...");
