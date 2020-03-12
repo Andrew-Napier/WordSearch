@@ -50,28 +50,6 @@ namespace TestHarness
                 .AddTransient<IRandomPicker, RandomPicker>()
                 .AddTransient<Board, Board>()
                 .AddTransient<PlacementChecker, PlacementChecker>();
-
-            /*
-            x IConfig config = new Config(ConfigurationManager.AppSettings);
-            x serviceCollection.AddSingleton<IConfig>(config);
-            x serviceCollection.AddSingleton<IWordFilter>(new WordFilter());
-
-
-            x serviceCollection.Add(new ServiceDescriptor(WordSource, IWordSource));
-                Console.WriteLine("Word Source...");
-            x var ws = new WordSource(web, config, wf);
-            x Console.WriteLine("Dictionary ...");
-            x var rwd = new RelatableWordsDictionary(ws);
-            x Console.WriteLine("Word Filter...");
-            rwd.PrepareDictionary();
-
-            Console.WriteLine("Random Generator...");
-            x var randomGenerator = new RandomPicker(DateTime.UtcNow.Ticks.GetHashCode());
-            Console.WriteLine("Board...");
-            var lettersGrid = new Board(11);
-            Console.WriteLine("Placement Checker...");
-            var placeGenerator = new PlacementChecker(11, randomGenerator);
-            */
         }
     }
 }

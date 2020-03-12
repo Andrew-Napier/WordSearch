@@ -13,7 +13,7 @@ namespace PuzzleBoard
         private IRelatableWordsDictionary wordGenerator;
         private IDirectionCounts directionCounts;
         private IRandomPicker random;
-
+        private List<string> wordsToFind = new List<string>();
 
         public PuzzleGenerator(IServiceProvider provider, IRelatableWordsDictionary relatableWordsDictionary)
         {
@@ -41,8 +41,7 @@ namespace PuzzleBoard
         {
             var done = false;
             int rejectedWordsCount = 0;
-            string[] title = wordGenerator.GetTitle().ToArray();
-            var wordsToFind = new List<string>();
+            wordsToFind.Clear();
             while (!done)
             {
                 if (wordGenerator.IsEmpty())
@@ -54,7 +53,7 @@ namespace PuzzleBoard
                 if (!wordGenerator.IsWordAvailable(wordLength)) continue;
 
                 string word = wordGenerator.PopWordOfLength(wordLength).ToUpperInvariant();
-                if (wordsToFind.Contains(word)) continue;
+                if (IsWordPreexisting(word)) continue;
 
                 var possibilities = placeGenerator.GetPossibilities(lettersGrid, word);
                 StartingPosition bestPossible = null;
@@ -96,6 +95,23 @@ namespace PuzzleBoard
             wordsToFind.Sort();
             foreach (var w in wordsToFind)
                 Console.WriteLine($"- {w}");
+        }
+
+        private bool IsWordPreexisting(string word)
+        {
+            if (wordsToFind.Contains(word))
+            {
+                return true;
+            }
+            foreach(var existingWord in wordsToFind)
+            {
+                if (word.Contains(existingWord))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
