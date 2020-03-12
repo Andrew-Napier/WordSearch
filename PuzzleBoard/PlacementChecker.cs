@@ -8,7 +8,7 @@ namespace PuzzleBoard
         private int _maxSize;
         private IRandomPicker _random;
 
-        public PlacementChecker(int boardSize, IRandomPicker random)
+        public PlacementChecker(IRandomPicker random, int boardSize = 11)
         {
             _maxSize = boardSize;
             _random = random;

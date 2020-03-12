@@ -6,7 +6,9 @@ namespace WordChooser
     public interface IRelatableWordsDictionary
     {
         IEnumerable<string> GetTitle();
+        bool IsEmpty();
         bool IsWordAvailable(int length);
+        int MaxLengthOfWord();
         string PopWordOfLength(int length);
         void PrepareDictionary();
     }
@@ -14,6 +16,7 @@ namespace WordChooser
     public class RelatableWordsDictionary : IRelatableWordsDictionary
     {
         private IWordSource _wordSource;
+        private int _maxLength = 0;
         private Dictionary<int, Stack<string>> _sourceLists
             = new Dictionary<int, Stack<string>>();
 
@@ -27,6 +30,7 @@ namespace WordChooser
             foreach(var word in _wordSource.GetListOfWords())
             {
                 var length = word.Length;
+                _maxLength = Math.Max(length, _maxLength);
                 if (!_sourceLists.ContainsKey(length))
                 {
                     _sourceLists.Add(length, new Stack<string>());
@@ -60,6 +64,22 @@ namespace WordChooser
         {
             return _sourceLists.ContainsKey(length)
                 && _sourceLists[length].TryPeek(out string value);
+        }
+
+        public int MaxLengthOfWord()
+        {
+            return _maxLength;
+        }
+
+        public bool IsEmpty()
+        {
+            foreach(var entry in _sourceLists.Values)
+            {
+                if (entry.Count > 0)
+                    return false;
+            }
+
+            return true;
         }
     }
 }

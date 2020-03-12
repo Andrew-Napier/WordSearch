@@ -1,25 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace PuzzleBoard
+﻿namespace PuzzleBoard
 {
-    public class PlacementChooser
+    public interface IPlacementChooser
     {
-        private Dictionary<WordDirections, int> _directionScores;
+        public StartingPosition ChooseBestPlacementOption(
+            StartingPosition opt1,
+            StartingPosition opt2,
+            IDirectionCounts directionCounts);
+    }
 
-        public PlacementChooser(Dictionary<WordDirections, int> counts)
-        {
-            _directionScores = counts;
-        }
+    public class PlacementChooser : IPlacementChooser
+    {
 
-        public StartingPosition ChooseBestPlacementOption(StartingPosition opt1, StartingPosition opt2)
+        public StartingPosition ChooseBestPlacementOption(
+            StartingPosition opt1,
+            StartingPosition opt2,
+            IDirectionCounts directionCounts)
         {
             if (opt2 == null) return opt1;
             if (opt1 == null) return opt2;
 
             if (opt1.Intersects == opt2.Intersects)
             {
-                if (_directionScores[opt1.Direction] <= _directionScores[opt2.Direction])
+                if (directionCounts.GetCount(opt1.Direction) <= directionCounts.GetCount(opt2.Direction))
                     return opt1;
                 else
                     return opt2;

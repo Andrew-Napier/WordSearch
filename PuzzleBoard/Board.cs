@@ -8,7 +8,7 @@ namespace PuzzleBoard
         private char[,] _lettersGrid;
         private int _size;
 
-        public Board(int boardSize)
+        public Board(int boardSize = 11)
         {
             _size = boardSize;
             _lettersGrid = new char[boardSize,boardSize];

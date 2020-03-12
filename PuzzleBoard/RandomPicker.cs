@@ -14,8 +14,9 @@ namespace PuzzleBoard
         private int _sumOfWeights = 0;
 
 
-        public RandomPicker(int seed)
+        public RandomPicker()
         {
+            int seed = DateTime.UtcNow.GetHashCode();
             _rnd = new Random(seed);
             for (int i = 0; i < _weights.Length; i++)
                 _sumOfWeights += _weights[i];
