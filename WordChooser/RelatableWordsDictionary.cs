@@ -27,6 +27,7 @@ namespace WordChooser
 
         public void PrepareDictionary()
         {
+            int count = 0;
             foreach(var word in _wordSource.GetListOfWords())
             {
                 var length = word.Length;
@@ -36,7 +37,9 @@ namespace WordChooser
                     _sourceLists.Add(length, new Stack<string>());
                 }
                 _sourceLists[length].Push(word);
+                count += 1;
             }
+            Console.WriteLine($"Words in dictionary: {count}");
         }
 
         public string PopWordOfLength(int length)
@@ -55,10 +58,8 @@ namespace WordChooser
             return value;
         }
 
-        public IEnumerable<string> GetTitle()
-        {
-            return _wordSource.GetTitle();
-        }
+        public IEnumerable<string> GetTitle() =>
+            _wordSource.GetTitle();
 
         public bool IsWordAvailable(int length)
         {
@@ -66,10 +67,7 @@ namespace WordChooser
                 && _sourceLists[length].TryPeek(out string value);
         }
 
-        public int MaxLengthOfWord()
-        {
-            return _maxLength;
-        }
+        public int MaxLengthOfWord() => _maxLength;
 
         public bool IsEmpty()
         {

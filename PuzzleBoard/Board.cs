@@ -7,8 +7,9 @@ namespace PuzzleBoard
     {
         private char[,] _lettersGrid;
         private int _size;
+        private const int boardSize = 11;
 
-        public Board(int boardSize = 11)
+        public Board()
         {
             _size = boardSize;
             _lettersGrid = new char[boardSize,boardSize];
@@ -89,10 +90,10 @@ namespace PuzzleBoard
                 {
                     if (isEmpty(row,col))
                     {
-                        newGrid[row, col] = word[i];
+                        newGrid[row, col] = letters[i];
                         i++;
                     }
-                    if (i >= word.Length) break;
+                    if (i >= letters.Count) break;
                 }
             }
             return new Board(newGrid);

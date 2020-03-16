@@ -13,7 +13,8 @@ namespace PuzzleBoard
         private IRelatableWordsDictionary wordGenerator;
         private IDirectionCounts directionCounts;
         private IRandomPicker random;
-        private List<string> wordsToFind = new List<string>();
+        private IServiceProvider serviceProvider;
+        private IWordCollection wordsToFind;
 
         public PuzzleGenerator(IServiceProvider provider, IRelatableWordsDictionary relatableWordsDictionary)
         {
@@ -22,38 +23,26 @@ namespace PuzzleBoard
             this.wordGenerator = relatableWordsDictionary;
             this.directionCounts = provider.GetRequiredService<IDirectionCounts>();
             this.random = provider.GetRequiredService<IRandomPicker>();
-        }
-
-        public PuzzleGenerator(Board lettersGrid,
-            PlacementChecker placeGenerator,
-            IRelatableWordsDictionary wordGenerator,
-            IDirectionCounts directionCounts,
-            IRandomPicker randomPicker)
-        {
-            this.lettersGrid = lettersGrid;
-            this.placeGenerator = placeGenerator;
-            this.wordGenerator = wordGenerator;
-            this.directionCounts = directionCounts;
-            this.random = randomPicker;
+            this.serviceProvider = provider;
         }
 
         public void Execute()
         {
             var done = false;
             int rejectedWordsCount = 0;
-            wordsToFind.Clear();
+            wordsToFind = serviceProvider.GetService<IWordCollection>();
             while (!done)
             {
                 if (wordGenerator.IsEmpty())
                 {
-                    Console.WriteLine($"\nWords: {wordsToFind.Count} Blanks Remaining: {lettersGrid.BlanksRemaining} Rejected Words: {rejectedWordsCount}");
+                    Console.WriteLine($"\nWords: {wordsToFind.Count()} Blanks Remaining: {lettersGrid.BlanksRemaining} Rejected Words: {rejectedWordsCount}");
                     throw new Exception("out of words...");
                 }
                 int wordLength = random.PickWeightedWordLength();
                 if (!wordGenerator.IsWordAvailable(wordLength)) continue;
 
                 string word = wordGenerator.PopWordOfLength(wordLength).ToUpperInvariant();
-                if (IsWordPreexisting(word)) continue;
+                if (wordsToFind.IsPreexisting(word)) continue;
 
                 var possibilities = placeGenerator.GetPossibilities(lettersGrid, word);
                 StartingPosition bestPossible = null;
@@ -74,9 +63,9 @@ namespace PuzzleBoard
                 }
 
                 var correctLength = lettersGrid.BlanksRemaining;
-                Console.Write($"\rFitted words: {wordsToFind.Count}. Failed Count: {rejectedWordsCount}. Remaining blanks: {correctLength}  ");
+                Console.Write($"\rFitted words: {wordsToFind.Count()}. Failed Count: {rejectedWordsCount}. Remaining blanks: {correctLength}  ");
                 if (correctLength <= wordGenerator.MaxLengthOfWord() &&
-                    wordsToFind.Count > 15)
+                    wordsToFind.Count() > 15)
                 {
                     done = wordGenerator.IsWordAvailable(correctLength);
                     if (done)
@@ -85,34 +74,16 @@ namespace PuzzleBoard
                     }
                     else if (correctLength < 4)
                     {
-                        Console.WriteLine($"\nWords: {wordsToFind.Count} Blanks Remaining: {correctLength} Rejected Words: {rejectedWordsCount}");
+                        Console.WriteLine($"\nWords: {wordsToFind.Count()} Blanks Remaining: {correctLength} Rejected Words: {rejectedWordsCount}");
                         throw new Exception("failed to word...");
                     }
                 }
             }
             lettersGrid.Display();
 
-            wordsToFind.Sort();
-            foreach (var w in wordsToFind)
-                Console.WriteLine($"- {w}");
+            wordsToFind.Display();
         }
 
-        private bool IsWordPreexisting(string word)
-        {
-            if (wordsToFind.Contains(word))
-            {
-                return true;
-            }
-            foreach(var existingWord in wordsToFind)
-            {
-                if (word.Contains(existingWord))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
     }
 }
 

@@ -33,6 +33,7 @@ namespace TestHarness
                 }
                 Console.WriteLine("Try again? (y/n)");
                 key = Console.ReadKey();
+                Console.WriteLine();
             } while (!"Nn".Contains(key.KeyChar));
         }
 
@@ -48,6 +49,7 @@ namespace TestHarness
                 .AddTransient<IRelatableWordsDictionary, RelatableWordsDictionary>()
                 .AddTransient<IDirectionCounts, DirectionCounts>()
                 .AddTransient<IRandomPicker, RandomPicker>()
+                .AddTransient<IWordCollection, WordCollection>()
                 .AddTransient<Board, Board>()
                 .AddTransient<PlacementChecker, PlacementChecker>();
         }
