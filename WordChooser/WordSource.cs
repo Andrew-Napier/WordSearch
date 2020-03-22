@@ -5,12 +5,6 @@ using HtmlAgilityPack;
 
 namespace WordChooser
 {
-    public interface IWordSource
-    {
-        IEnumerable<string> GetListOfWords();
-        IEnumerable<string> GetTitle();
-    }
-
     public class WordSource : IWordSource
     {
         private HtmlDocument _doc;

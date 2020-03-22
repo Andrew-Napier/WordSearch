@@ -44,13 +44,14 @@ namespace TestHarness
             serviceCollection
                 .AddSingleton<HtmlWeb, HtmlWeb>()
                 .AddSingleton<IConfig>(config)
+                .AddTransient<IDecisionMaker, DecisionMaker>()
                 .AddSingleton<IWordFilter, WordFilter>()
                 .AddTransient<IWordSource, WordSource>()
                 .AddTransient<IRelatableWordsDictionary, RelatableWordsDictionary>()
                 .AddTransient<IDirectionCounts, DirectionCounts>()
                 .AddTransient<IRandomPicker, RandomPicker>()
                 .AddTransient<IWordCollection, WordCollection>()
-                .AddTransient<Board, Board>()
+                .AddTransient<IBoard, Board>()
                 .AddTransient<PlacementChecker, PlacementChecker>();
         }
     }

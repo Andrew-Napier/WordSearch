@@ -1,12 +1,6 @@
 ﻿using System;
 namespace PuzzleBoard
 {
-    public interface IRandomPicker
-    {
-        int PickWeightedWordLength();
-        bool PickBoolean();
-    }
-
     public class RandomPicker : IRandomPicker
     {
         private Random _rnd;

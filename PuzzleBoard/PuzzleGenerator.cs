@@ -8,82 +8,97 @@ namespace PuzzleBoard
 {
     public class PuzzleGenerator
     {
-        private Board lettersGrid;
+        private IBoard lettersGrid;
         private PlacementChecker placeGenerator;
         private IRelatableWordsDictionary wordGenerator;
+        private IDecisionMaker decisionMaker;
         private IDirectionCounts directionCounts;
         private IRandomPicker random;
-        private IServiceProvider serviceProvider;
         private IWordCollection wordsToFind;
+        private IWordCollection rejectedWords;
 
         public PuzzleGenerator(IServiceProvider provider, IRelatableWordsDictionary relatableWordsDictionary)
         {
-            this.lettersGrid = provider.GetRequiredService<Board>();
+            this.lettersGrid = provider.GetRequiredService<IBoard>();
             this.placeGenerator = provider.GetRequiredService<PlacementChecker>();
             this.wordGenerator = relatableWordsDictionary;
+            this.decisionMaker = provider.GetService<IDecisionMaker>();
             this.directionCounts = provider.GetRequiredService<IDirectionCounts>();
             this.random = provider.GetRequiredService<IRandomPicker>();
-            this.serviceProvider = provider;
+            this.rejectedWords = provider.GetRequiredService<IWordCollection>();
+            this.wordsToFind = provider.GetService<IWordCollection>();
         }
 
         public void Execute()
         {
-            var done = false;
-            int rejectedWordsCount = 0;
-            wordsToFind = serviceProvider.GetService<IWordCollection>();
-            while (!done)
+
+            int blankSpaces = lettersGrid.BlanksRemaining();
+
+            while (blankSpaces > 0)
             {
-                if (wordGenerator.IsEmpty())
+                decisionMaker.Configure(lettersGrid, wordsToFind, wordGenerator);
+                if (decisionMaker.IsTimeToAttemptBlattingWord())
                 {
-                    Console.WriteLine($"\nWords: {wordsToFind.Count()} Blanks Remaining: {lettersGrid.BlanksRemaining} Rejected Words: {rejectedWordsCount}");
-                    throw new Exception("out of words...");
+                    lettersGrid = AttemptBlattingWord(lettersGrid, wordGenerator);
                 }
-                int wordLength = random.PickWeightedWordLength();
-                if (!wordGenerator.IsWordAvailable(wordLength)) continue;
-
-                string word = wordGenerator.PopWordOfLength(wordLength).ToUpperInvariant();
-                if (wordsToFind.IsPreexisting(word)) continue;
-
-                var possibilities = placeGenerator.GetPossibilities(lettersGrid, word);
-                StartingPosition bestPossible = null;
-                foreach (var possible in possibilities)
+                else if (decisionMaker.IsTimeToTryAddingWord())
                 {
-                    var pc = new PlacementChooser();
-                    bestPossible = pc.ChooseBestPlacementOption(possible, bestPossible, directionCounts);                    
+                    lettersGrid = AttemptAddingWord(lettersGrid, wordGenerator);
                 }
-                if (bestPossible != null)
+                if (!decisionMaker.IsPuzzleStillViable(out string excuse))
                 {
-                    directionCounts.IncrementCount(bestPossible.Direction);
-                    lettersGrid = lettersGrid.AddWord(word, bestPossible);
-                    wordsToFind.Add(word);
+                    throw new PuzzleException(excuse);
                 }
-                else
-                {
-                    rejectedWordsCount++;
-                }
-
-                var correctLength = lettersGrid.BlanksRemaining;
-                Console.Write($"\rFitted words: {wordsToFind.Count()}. Failed Count: {rejectedWordsCount}. Remaining blanks: {correctLength}  ");
-                if (correctLength <= wordGenerator.MaxLengthOfWord() &&
-                    wordsToFind.Count() > 15)
-                {
-                    done = wordGenerator.IsWordAvailable(correctLength);
-                    if (done)
-                    {
-                        lettersGrid.BlatWord(wordGenerator.PopWordOfLength(correctLength));
-                    }
-                    else if (correctLength < 4)
-                    {
-                        Console.WriteLine($"\nWords: {wordsToFind.Count()} Blanks Remaining: {correctLength} Rejected Words: {rejectedWordsCount}");
-                        throw new Exception("failed to word...");
-                    }
-                }
+                blankSpaces = lettersGrid.BlanksRemaining();
             }
             lettersGrid.Display();
-
             wordsToFind.Display();
         }
 
+        private IBoard AttemptBlattingWord(IBoard lettersGrid, IRelatableWordsDictionary wordGenerator)
+        {
+            int length = lettersGrid.BlanksRemaining();
+            if (wordGenerator.IsWordAvailable(length))
+            {
+                return lettersGrid.BlatWord(wordGenerator.PopWordOfLength(length));
+            }
+
+            return lettersGrid;
+        }
+
+        private IBoard AttemptAddingWord(IBoard lettersGrid, IRelatableWordsDictionary wordGenerator)
+        {
+            int wordLength = random.PickWeightedWordLength();
+            if (!wordGenerator.IsWordAvailable(wordLength)) return lettersGrid;
+
+            string word = wordGenerator.PopWordOfLength(wordLength).ToUpperInvariant();
+            if (wordsToFind.IsPreexisting(word)) return lettersGrid;
+
+            var possibilities = placeGenerator.GetPossibilities(lettersGrid, word);
+            StartingPosition bestPossible = null;
+            foreach (var possible in possibilities)
+            {
+                var pc = new PlacementChooser();
+                bestPossible = pc.ChooseBestPlacementOption(possible, bestPossible, directionCounts);
+            }
+            if (bestPossible != null)
+            {
+                directionCounts.IncrementCount(bestPossible.Direction);
+                wordsToFind.Add(word);
+
+                return lettersGrid.AddWord(word, bestPossible);
+            }
+            else
+            {
+                AddToRejectedWordList(word);
+                return lettersGrid;
+            }
+        }
+
+        private void AddToRejectedWordList(string word)
+        {
+            rejectedWords.Add(word);
+        }
     }
 }
 

@@ -3,15 +3,6 @@ using System.Collections.Specialized;
 
 namespace WordChooser
 {
-    public interface IConfig
-    {
-        string SourceUrl();
-        string XnonTextClass();
-        string XtextPath();
-        string XtitlePath();
-        char[] WhiteSpace();
-        string[] ExclusionList();
-    }
 
     public class Config : NameValueCollection, IConfig
     {

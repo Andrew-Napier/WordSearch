@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PuzzleBoard
 {
-    public class Board
+    public class Board : IBoard
     {
         private char[,] _lettersGrid;
         private int _size;
@@ -28,36 +28,33 @@ namespace PuzzleBoard
             _size = source.GetUpperBound(0) + 1;
         }
 
-        public int BlanksRemaining
+        public int BlanksRemaining()
         {
-            get
+            var count = 0;
+            for(int r = 0; r < _size; r++)
             {
-                var count = 0;
-                for(int r = 0; r < _size; r++)
+                for(int c = 0; c < _size; c++)
                 {
-                    for(int c = 0; c < _size; c++)
+                    if (IsEmpty(r,c))
                     {
-                        if (isEmpty(r,c))
-                        {
-                            count++;
-                        }
+                        count++;
                     }
                 }
-                return count;
             }
+            return count;
         }
 
-        public bool isEmpty(int r, int c)
+        public bool IsEmpty(int r, int c)
         {
             return _lettersGrid[r, c] == '.';
         }
 
-        public bool isMatching(char letter, int row, int col)
+        public bool IsMatching(char letter, int row, int col)
         {
             return _lettersGrid[row, col] == letter;
         }
 
-        public Board AddWord(string word, StartingPosition position)
+        public IBoard AddWord(string word, StartingPosition position)
         {
             var newGrid = _lettersGrid;
             int i = 0;
@@ -72,7 +69,7 @@ namespace PuzzleBoard
             return new Board(newGrid);
         }
 
-        public Board BlatWord(string word)
+        public IBoard BlatWord(string word)
         {
             var newGrid = _lettersGrid;
             word = word.ToUpperInvariant();
@@ -88,7 +85,7 @@ namespace PuzzleBoard
             {
                 for (int col = 0; col < _size; col++)
                 {
-                    if (isEmpty(row,col))
+                    if (IsEmpty(row,col))
                     {
                         newGrid[row, col] = letters[i];
                         i++;

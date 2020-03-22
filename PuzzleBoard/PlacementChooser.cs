@@ -1,13 +1,5 @@
 ﻿namespace PuzzleBoard
 {
-    public interface IPlacementChooser
-    {
-        public StartingPosition ChooseBestPlacementOption(
-            StartingPosition opt1,
-            StartingPosition opt2,
-            IDirectionCounts directionCounts);
-    }
-
     public class PlacementChooser : IPlacementChooser
     {
 

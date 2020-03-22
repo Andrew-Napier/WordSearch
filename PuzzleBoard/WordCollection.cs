@@ -3,14 +3,6 @@ using System.Collections.Generic;
 
 namespace PuzzleBoard
 {
-    public interface IWordCollection
-    {
-        void Add(string word);
-        int Count();
-        void Display();
-        bool IsPreexisting(string word);
-    }
-
     public class WordCollection : IWordCollection
     {
         private List<string> _list = new List<string>();

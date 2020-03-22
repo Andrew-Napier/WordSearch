@@ -3,15 +3,6 @@ using System.Collections.Generic;
 
 namespace WordChooser
 {
-    public interface IRelatableWordsDictionary
-    {
-        IEnumerable<string> GetTitle();
-        bool IsEmpty();
-        bool IsWordAvailable(int length);
-        int MaxLengthOfWord();
-        string PopWordOfLength(int length);
-        void PrepareDictionary();
-    }
 
     public class RelatableWordsDictionary : IRelatableWordsDictionary
     {
@@ -19,6 +10,7 @@ namespace WordChooser
         private int _maxLength = 0;
         private Dictionary<int, Stack<string>> _sourceLists
             = new Dictionary<int, Stack<string>>();
+        private int _minLength = int.MaxValue;
 
         public RelatableWordsDictionary(IWordSource wordSource)
         {
@@ -32,6 +24,7 @@ namespace WordChooser
             {
                 var length = word.Length;
                 _maxLength = Math.Max(length, _maxLength);
+                _minLength = Math.Min(length, _minLength);
                 if (!_sourceLists.ContainsKey(length))
                 {
                     _sourceLists.Add(length, new Stack<string>());
@@ -68,6 +61,7 @@ namespace WordChooser
         }
 
         public int MaxLengthOfWord() => _maxLength;
+        public int MinLengthOfWord() => _minLength;
 
         public bool IsEmpty()
         {
@@ -79,5 +73,6 @@ namespace WordChooser
 
             return true;
         }
+
     }
 }

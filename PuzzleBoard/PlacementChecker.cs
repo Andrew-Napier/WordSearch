@@ -15,7 +15,7 @@ namespace PuzzleBoard
             _random = random;
         }
 
-        public IEnumerable<StartingPosition> GetPossibilities(Board lettersGrid, string word)
+        public IEnumerable<StartingPosition> GetPossibilities(IBoard lettersGrid, string word)
         {
             var positions = new List<StartingPosition>();
             for (int r = 0; r < _maxSize; r++)
@@ -34,11 +34,11 @@ namespace PuzzleBoard
                                 var row = r + (d.RowDirection() * i);
                                 var col = c + (d.ColDirection() * i);
 
-                                if (lettersGrid.isMatching(l, row, col))
+                                if (lettersGrid.IsMatching(l, row, col))
                                 {
                                     intersects++;
                                 }
-                                else if (!lettersGrid.isEmpty(row, col))
+                                else if (!lettersGrid.IsEmpty(row, col))
                                 {
                                     spotForWord = false;
                                 }

@@ -3,12 +3,6 @@ using System.Collections.Generic;
 
 namespace PuzzleBoard
 {
-    public interface IDirectionCounts
-    {
-        public int GetCount(WordDirections direction);
-        public void IncrementCount(WordDirections direction);
-    }
-
     public class DirectionCounts : IDirectionCounts
     {
         private Dictionary<WordDirections, int> directionCounts = new Dictionary<WordDirections, int>();

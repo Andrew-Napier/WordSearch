@@ -6,10 +6,6 @@ using WeCantSpell.Hunspell;
 
 namespace WordChooser
 {
-    public interface IWordFilter
-    {
-        IEnumerable<string> Filter(IEnumerable<string> unfilteredList);
-    }
 
     public class WordFilter : IWordFilter
     {

@@ -6,8 +6,8 @@ namespace WordChooser
     {
         public static bool IsContainingOnlyLetters(this string target)
         {
-            var normalisedTarget = target.ToUpperInvariant().ToCharArray();
-            foreach (char letter in target.ToUpperInvariant().ToCharArray())
+            var normalisedTarget = target.ToUpperInvariant().ToCharArray();            
+            foreach (char letter in normalisedTarget)
             {
                 if (!"ABCDEFGHIJKLMNOPQRSTUVWXYZ".Contains(letter))
                 {
