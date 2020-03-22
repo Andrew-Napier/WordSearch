@@ -27,7 +27,7 @@ namespace TestHarness
                 {
                     pg.Execute();
                 }
-                catch(Exception e)
+                catch(PuzzleException e)
                 {
                     Console.WriteLine(e.Message);
                 }
