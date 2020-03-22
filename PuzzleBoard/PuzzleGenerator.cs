@@ -8,51 +8,51 @@ namespace PuzzleBoard
 {
     public class PuzzleGenerator
     {
-        private IBoard lettersGrid;
-        private PlacementChecker placeGenerator;
-        private IRelatableWordsDictionary wordGenerator;
-        private IDecisionMaker decisionMaker;
-        private IDirectionCounts directionCounts;
-        private IRandomPicker random;
-        private IWordCollection wordsToFind;
-        private IWordCollection rejectedWords;
+        private IBoard _lettersGrid;
+        private PlacementChecker _placeGenerator;
+        private IRelatableWordsDictionary _wordGenerator;
+        private IDecisionMaker _decisionMaker;
+        private IDirectionCounts _directionCounts;
+        private IRandomPicker _random;
+        private IWordCollection _wordsToFind;
+        private IWordCollection _rejectedWords;
 
         public PuzzleGenerator(IServiceProvider provider, IRelatableWordsDictionary relatableWordsDictionary)
         {
-            this.lettersGrid = provider.GetRequiredService<IBoard>();
-            this.placeGenerator = provider.GetRequiredService<PlacementChecker>();
-            this.wordGenerator = relatableWordsDictionary;
-            this.decisionMaker = provider.GetService<IDecisionMaker>();
-            this.directionCounts = provider.GetRequiredService<IDirectionCounts>();
-            this.random = provider.GetRequiredService<IRandomPicker>();
-            this.rejectedWords = provider.GetRequiredService<IWordCollection>();
-            this.wordsToFind = provider.GetService<IWordCollection>();
+            this._lettersGrid = provider.GetRequiredService<IBoard>();
+            this._placeGenerator = provider.GetRequiredService<PlacementChecker>();
+            this._wordGenerator = relatableWordsDictionary;
+            this._decisionMaker = provider.GetService<IDecisionMaker>();
+            this._directionCounts = provider.GetRequiredService<IDirectionCounts>();
+            this._random = provider.GetRequiredService<IRandomPicker>();
+            this._rejectedWords = provider.GetRequiredService<IWordCollection>();
+            this._wordsToFind = provider.GetService<IWordCollection>();
         }
 
         public void Execute()
         {
 
-            int blankSpaces = lettersGrid.BlanksRemaining();
+            int blankSpaces = _lettersGrid.BlanksRemaining();
 
             while (blankSpaces > 0)
             {
-                decisionMaker.Configure(lettersGrid, wordsToFind, wordGenerator);
-                if (decisionMaker.IsTimeToAttemptBlattingWord())
+                _decisionMaker.Configure(_lettersGrid, _wordsToFind, _wordGenerator);
+                if (_decisionMaker.IsTimeToAttemptBlattingWord())
                 {
-                    lettersGrid = AttemptBlattingWord(lettersGrid, wordGenerator);
+                    _lettersGrid = AttemptBlattingWord(_lettersGrid, _wordGenerator);
                 }
-                else if (decisionMaker.IsTimeToTryAddingWord())
+                else if (_decisionMaker.IsTimeToTryAddingWord())
                 {
-                    lettersGrid = AttemptAddingWord(lettersGrid, wordGenerator);
+                    _lettersGrid = AttemptAddingWord(_lettersGrid, _wordGenerator);
                 }
-                if (!decisionMaker.IsPuzzleStillViable(out string excuse))
+                if (!_decisionMaker.IsPuzzleStillViable(out string excuse))
                 {
                     throw new PuzzleException(excuse);
                 }
-                blankSpaces = lettersGrid.BlanksRemaining();
+                blankSpaces = _lettersGrid.BlanksRemaining();
             }
-            lettersGrid.Display();
-            wordsToFind.Display();
+            _lettersGrid.Display();
+            _wordsToFind.Display();
         }
 
         private IBoard AttemptBlattingWord(IBoard lettersGrid, IRelatableWordsDictionary wordGenerator)
@@ -68,23 +68,23 @@ namespace PuzzleBoard
 
         private IBoard AttemptAddingWord(IBoard lettersGrid, IRelatableWordsDictionary wordGenerator)
         {
-            int wordLength = random.PickWeightedWordLength();
+            int wordLength = _random.PickWeightedWordLength();
             if (!wordGenerator.IsWordAvailable(wordLength)) return lettersGrid;
 
             string word = wordGenerator.PopWordOfLength(wordLength).ToUpperInvariant();
-            if (wordsToFind.IsPreexisting(word)) return lettersGrid;
+            if (_wordsToFind.IsPreexisting(word)) return lettersGrid;
 
-            var possibilities = placeGenerator.GetPossibilities(lettersGrid, word);
+            var possibilities = _placeGenerator.GetPossibilities(lettersGrid, word);
             StartingPosition bestPossible = null;
             foreach (var possible in possibilities)
             {
                 var pc = new PlacementChooser();
-                bestPossible = pc.ChooseBestPlacementOption(possible, bestPossible, directionCounts);
+                bestPossible = pc.ChooseBestPlacementOption(possible, bestPossible, _directionCounts);
             }
             if (bestPossible != null)
             {
-                directionCounts.IncrementCount(bestPossible.Direction);
-                wordsToFind.Add(word);
+                _directionCounts.IncrementCount(bestPossible.Direction);
+                _wordsToFind.Add(word);
 
                 return lettersGrid.AddWord(word, bestPossible);
             }
@@ -97,7 +97,7 @@ namespace PuzzleBoard
 
         private void AddToRejectedWordList(string word)
         {
-            rejectedWords.Add(word);
+            _rejectedWords.Add(word);
         }
     }
 }
