@@ -29,7 +29,7 @@ namespace TestHarness
                 }
                 catch(PuzzleException e)
                 {
-                    Console.WriteLine(e.Message);
+                    Console.WriteLine($"\n{e.Message}");
                 }
                 Console.WriteLine("Try again? (y/n)");
                 key = Console.ReadKey();
@@ -50,8 +50,9 @@ namespace TestHarness
                 .AddTransient<IRelatableWordsDictionary, RelatableWordsDictionary>()
                 .AddTransient<IDirectionCounts, DirectionCounts>()
                 .AddTransient<IRandomPicker, RandomPicker>()
-                .AddTransient<IWordCollection, WordCollection>()
                 .AddTransient<IBoard, Board>()
+                .AddTransient<IBoardList, BoardList>()
+                .AddTransient<IBoardListEntryFactory, BoardListEntryFactory>()
                 .AddTransient<PlacementChecker, PlacementChecker>();
         }
     }

@@ -8,9 +8,12 @@ namespace PuzzleBoard
         private char[,] _lettersGrid;
         private int _size;
         private const int boardSize = 11;
+        private IBoardList _boardList;
 
-        public Board()
+
+        public Board(IBoardList boardList)
         {
+            _boardList = boardList;
             _size = boardSize;
             _lettersGrid = new char[boardSize,boardSize];
             for(int r = 0; r < boardSize; r++)
@@ -22,8 +25,9 @@ namespace PuzzleBoard
             }
         }
 
-        public Board(char[,] source)
+        public Board(char[,] source, IBoardList boardList)
         {
+            _boardList = boardList;
             _lettersGrid = source;
             _size = source.GetUpperBound(0) + 1;
         }
@@ -65,14 +69,16 @@ namespace PuzzleBoard
                 newGrid[r, c] = letter;
                 i++;
             }
+            _boardList.AddWord(word, position);
 
-            return new Board(newGrid);
+            return new Board(newGrid, _boardList);
         }
 
         public IBoard BlatWord(string word)
         {
             var newGrid = _lettersGrid;
             word = word.ToUpperInvariant();
+            _boardList.BlatWord(word);
             List<char> letters = new List<char>();
             foreach (var letter in word.ToCharArray())
             {
@@ -93,7 +99,7 @@ namespace PuzzleBoard
                     if (i >= letters.Count) break;
                 }
             }
-            return new Board(newGrid);
+            return new Board(newGrid, _boardList);
         }
 
         public void Display()
@@ -107,6 +113,13 @@ namespace PuzzleBoard
                 }
                 Console.WriteLine();                  
             }
+            _boardList.Sort();
+            foreach (var entry in _boardList.GetEntries())
+            {
+                Console.WriteLine($"- {entry.GetWord()}");
+            }
         }
+
+        public IBoardList List() => _boardList;
     }
 }

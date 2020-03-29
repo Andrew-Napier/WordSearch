@@ -14,8 +14,8 @@ namespace PuzzleBoard
         private IDecisionMaker _decisionMaker;
         private IDirectionCounts _directionCounts;
         private IRandomPicker _random;
-        private IWordCollection _wordsToFind;
-        private IWordCollection _rejectedWords;
+        private IBoardList _wordsToFind;
+        private IBoardList _rejectedWords;
 
         public PuzzleGenerator(IServiceProvider provider, IRelatableWordsDictionary relatableWordsDictionary)
         {
@@ -25,8 +25,8 @@ namespace PuzzleBoard
             this._decisionMaker = provider.GetService<IDecisionMaker>();
             this._directionCounts = provider.GetRequiredService<IDirectionCounts>();
             this._random = provider.GetRequiredService<IRandomPicker>();
-            this._rejectedWords = provider.GetRequiredService<IWordCollection>();
-            this._wordsToFind = provider.GetService<IWordCollection>();
+            this._rejectedWords = provider.GetRequiredService<IBoardList>();
+            this._wordsToFind = provider.GetService<IBoardList>();
         }
 
         public void Execute()
@@ -36,7 +36,7 @@ namespace PuzzleBoard
 
             while (blankSpaces > 0)
             {
-                _decisionMaker.Configure(_lettersGrid, _wordsToFind, _wordGenerator);
+                _decisionMaker.Configure(_lettersGrid, _wordGenerator);
                 if (_decisionMaker.IsTimeToAttemptBlattingWord())
                 {
                     _lettersGrid = AttemptBlattingWord(_lettersGrid, _wordGenerator);
@@ -50,9 +50,10 @@ namespace PuzzleBoard
                     throw new PuzzleException(excuse);
                 }
                 blankSpaces = _lettersGrid.BlanksRemaining();
+                Console.Write($"Added: {_wordsToFind.Count()}, Rejected: {_rejectedWords.Count()}, Blanks: {blankSpaces}\r");
             }
+            Console.WriteLine();
             _lettersGrid.Display();
-            _wordsToFind.Display();
         }
 
         private IBoard AttemptBlattingWord(IBoard lettersGrid, IRelatableWordsDictionary wordGenerator)
@@ -84,7 +85,7 @@ namespace PuzzleBoard
             if (bestPossible != null)
             {
                 _directionCounts.IncrementCount(bestPossible.Direction);
-                _wordsToFind.Add(word);
+                _wordsToFind.AddWord(word, bestPossible);
 
                 return lettersGrid.AddWord(word, bestPossible);
             }
@@ -97,7 +98,7 @@ namespace PuzzleBoard
 
         private void AddToRejectedWordList(string word)
         {
-            _rejectedWords.Add(word);
+            _rejectedWords.AddWord(word, null);
         }
     }
 }

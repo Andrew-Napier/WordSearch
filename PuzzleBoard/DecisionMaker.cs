@@ -6,17 +6,17 @@ namespace PuzzleBoard
     public class DecisionMaker : IDecisionMaker
     {
         private IRelatableWordsDictionary _dictionary;
-        private IWordCollection _wordCollection;
+        private IBoardList _wordCollection;
         private IBoard _board;
 
         public DecisionMaker()
         {
         }
 
-        public void Configure(IBoard board, IWordCollection addedWords, IRelatableWordsDictionary dictionary)
+        public void Configure(IBoard board, IRelatableWordsDictionary dictionary)
         {
             _board = board;
-            _wordCollection = addedWords;
+            _wordCollection = board.List();
             _dictionary = dictionary;
         }
 
