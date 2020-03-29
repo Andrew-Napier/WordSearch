@@ -29,7 +29,7 @@ namespace PuzzleBoard
             this._wordsToFind = provider.GetService<IBoardList>();
         }
 
-        public void Execute()
+        public IBoard Execute()
         {
 
             int blankSpaces = _lettersGrid.BlanksRemaining();
@@ -50,10 +50,10 @@ namespace PuzzleBoard
                     throw new PuzzleException(excuse);
                 }
                 blankSpaces = _lettersGrid.BlanksRemaining();
-                Console.Write($"Added: {_wordsToFind.Count()}, Rejected: {_rejectedWords.Count()}, Blanks: {blankSpaces}\r");
+                Console.Write($"Added: {_wordsToFind.Count()}, Rejected: {_rejectedWords.Count()}, Blanks: {blankSpaces}   \r");
             }
-            Console.WriteLine();
-            _lettersGrid.Display();
+
+            return _lettersGrid;
         }
 
         private IBoard AttemptBlattingWord(IBoard lettersGrid, IRelatableWordsDictionary wordGenerator)
@@ -70,7 +70,7 @@ namespace PuzzleBoard
         private IBoard AttemptAddingWord(IBoard lettersGrid, IRelatableWordsDictionary wordGenerator)
         {
             int wordLength = _random.PickWeightedWordLength();
-            if (!wordGenerator.IsWordAvailable(wordLength)) return lettersGrid;
+            if (!GetApproximateWordLength(ref wordLength, wordGenerator)) return lettersGrid;
 
             string word = wordGenerator.PopWordOfLength(wordLength).ToUpperInvariant();
             if (_wordsToFind.IsPreexisting(word)) return lettersGrid;
@@ -100,6 +100,24 @@ namespace PuzzleBoard
         {
             _rejectedWords.AddWord(word, null);
         }
+
+
+        private bool GetApproximateWordLength(ref int wordLength, IRelatableWordsDictionary wordGenerator)
+        {
+            int startPoint = wordLength;
+            int variation = 0;
+
+            while ((startPoint-variation) > 3 && wordLength < 11)
+            {
+                wordLength = startPoint - variation;
+                if (wordGenerator.IsWordAvailable(wordLength)) return true;
+                wordLength = startPoint + variation;
+                if (wordGenerator.IsWordAvailable(wordLength)) return true;
+                variation++;
+            }
+            return false;
+        }
+
     }
 }
 

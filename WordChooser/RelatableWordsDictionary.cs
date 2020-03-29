@@ -48,7 +48,39 @@ namespace WordChooser
                 return string.Empty;
             }
 
+            VerifyMinMax(length);
+
             return value;
+        }
+
+        private void VerifyMinMax(int length)
+        {
+            if (length == _minLength)
+            {
+                _minLength = adjustAsNecessary(length, +1);
+            }
+
+            if (length == _maxLength)
+            {
+                _maxLength = adjustAsNecessary(length, -1);
+            }
+        }
+
+        private int adjustAsNecessary(int length, int velocity)
+        {
+            int proposed = length;
+            while (proposed >= _minLength && proposed <= _maxLength)
+            {
+                if (_sourceLists.ContainsKey(proposed))
+                {
+                    if (_sourceLists[proposed].Count > 0)
+                    {
+                        return proposed;
+                    }
+                }
+                proposed += velocity;
+            }
+            return proposed;
         }
 
         public IEnumerable<string> GetTitle() =>

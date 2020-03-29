@@ -94,6 +94,11 @@ namespace PuzzleBoard
             IDirectionCounts directionCounts);
     }
 
+    public interface IPuzzleSize
+    {
+        public int Max();
+    }
+
     /// <summary>
     /// Random number generator that returns how long to make the next word.
     /// It's weighted, so shorter words are preferred, as they "stack" more

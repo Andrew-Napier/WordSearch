@@ -7,18 +7,17 @@ namespace PuzzleBoard
     {
         private char[,] _lettersGrid;
         private int _size;
-        private const int boardSize = 11;
         private IBoardList _boardList;
 
 
-        public Board(IBoardList boardList)
+        public Board(IBoardList boardList, IPuzzleSize size)
         {
             _boardList = boardList;
-            _size = boardSize;
-            _lettersGrid = new char[boardSize,boardSize];
-            for(int r = 0; r < boardSize; r++)
+            _size = size.Max();
+            _lettersGrid = new char[_size,_size];
+            for(int r = 0; r < _size; r++)
             {
-                for(int c = 0; c < boardSize; c++)
+                for(int c = 0; c < _size; c++)
                 {
                     _lettersGrid[r, c] = '.';
                 }

@@ -25,7 +25,8 @@ namespace TestHarness
                 var pg = new PuzzleGenerator(serviceProvider, rwd);
                 try
                 {
-                    pg.Execute();
+                    var puzzle = pg.Execute();
+                    puzzle.Display();
                 }
                 catch(PuzzleException e)
                 {
@@ -53,6 +54,7 @@ namespace TestHarness
                 .AddTransient<IBoard, Board>()
                 .AddTransient<IBoardList, BoardList>()
                 .AddTransient<IBoardListEntryFactory, BoardListEntryFactory>()
+                .AddSingleton<IPuzzleSize>(new PuzzleSize(11))
                 .AddTransient<PlacementChecker, PlacementChecker>();
         }
     }

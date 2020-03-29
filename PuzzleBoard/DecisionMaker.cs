@@ -8,9 +8,12 @@ namespace PuzzleBoard
         private IRelatableWordsDictionary _dictionary;
         private IBoardList _wordCollection;
         private IBoard _board;
+        private IPuzzleSize _puzzleSize;
 
-        public DecisionMaker()
+
+        public DecisionMaker(IPuzzleSize puzzleSize)
         {
+            _puzzleSize = puzzleSize;
         }
 
         public void Configure(IBoard board, IRelatableWordsDictionary dictionary)
@@ -29,7 +32,7 @@ namespace PuzzleBoard
                 return true;
             }
 
-                if (_dictionary.IsEmpty())
+            if (_dictionary.IsEmpty())
             {
                 reasonForNonViability = "No more words to choose from";
                 return false;
@@ -41,11 +44,16 @@ namespace PuzzleBoard
                 return false;
             }
 
-            /* One more test:
-             * Some condition about blanks remaining and word lengths still to choose from... */
             if (blanksRemaining < _dictionary.MinLengthOfWord())
             {
                 reasonForNonViability = "No word short enough to blat";
+                return false;
+            }
+
+            if (blanksRemaining > _dictionary.MaxLengthOfWord() &&
+                _dictionary.MinLengthOfWord() > _puzzleSize.Max())
+            {
+                reasonForNonViability = "Too many blanks to blat, no words short enough to add";
                 return false;
             }
 
