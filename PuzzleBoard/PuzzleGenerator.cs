@@ -13,6 +13,7 @@ namespace PuzzleBoard
         private IRelatableWordsDictionary _wordGenerator;
         private IDecisionMaker _decisionMaker;
         private IDirectionCounts _directionCounts;
+        private IPuzzleSize _puzzleSize;
         private IRandomPicker _random;
         private IBoardList _wordsToFind;
         private IBoardList _rejectedWords;
@@ -21,6 +22,7 @@ namespace PuzzleBoard
         {
             this._lettersGrid = provider.GetRequiredService<IBoard>();
             this._placeGenerator = provider.GetRequiredService<PlacementChecker>();
+            this._puzzleSize = provider.GetRequiredService<IPuzzleSize>();
             this._wordGenerator = relatableWordsDictionary;
             this._decisionMaker = provider.GetService<IDecisionMaker>();
             this._directionCounts = provider.GetRequiredService<IDirectionCounts>();
@@ -106,8 +108,9 @@ namespace PuzzleBoard
         {
             int startPoint = wordLength;
             int variation = 0;
+            int max = _puzzleSize.Max();
 
-            while ((startPoint-variation) > 3 && wordLength < 11)
+            while ((startPoint-variation) > 3 && wordLength < max)
             {
                 wordLength = startPoint - variation;
                 if (wordGenerator.IsWordAvailable(wordLength)) return true;

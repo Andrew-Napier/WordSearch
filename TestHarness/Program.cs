@@ -45,6 +45,7 @@ namespace TestHarness
             serviceCollection
                 .AddSingleton<HtmlWeb, HtmlWeb>()
                 .AddSingleton<IConfig>(config)
+                .AddSingleton<IPuzzleSize>(new PuzzleSize(11))
                 .AddTransient<IDecisionMaker, DecisionMaker>()
                 .AddSingleton<IWordFilter, WordFilter>()
                 .AddTransient<IWordSource, WordSource>()
@@ -54,7 +55,6 @@ namespace TestHarness
                 .AddTransient<IBoard, Board>()
                 .AddTransient<IBoardList, BoardList>()
                 .AddTransient<IBoardListEntryFactory, BoardListEntryFactory>()
-                .AddSingleton<IPuzzleSize>(new PuzzleSize(11))
                 .AddTransient<PlacementChecker, PlacementChecker>();
         }
     }

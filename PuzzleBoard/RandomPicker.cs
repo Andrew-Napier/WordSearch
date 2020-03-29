@@ -1,18 +1,26 @@
 ﻿using System;
+using System.Collections.Generic;
+
 namespace PuzzleBoard
 {
     public class RandomPicker : IRandomPicker
     {
         private Random _rnd;
-        private int[] _weights = {0,0,0,5,5,5,4,3,2,1,1};
+        private int[] _weights = {0,0,0,5,6,5,4,3,3,2,1,1,1,1,1,1,1,1,1};
         private int _sumOfWeights = 0;
 
 
-        public RandomPicker()
+        public RandomPicker(IPuzzleSize puzzleSize)
         {
             int seed = DateTime.UtcNow.GetHashCode();
             _rnd = new Random(seed);
-            for (int i = 0; i < _weights.Length; i++)
+
+            if (puzzleSize.Max() > _weights.Length)
+            {
+                throw new PuzzleException($"Random picker cannot pick words > {_weights.Length} characters long");
+            }
+
+            for (int i = 0; i < puzzleSize.Max(); i++)
                 _sumOfWeights += _weights[i];
         }
 
