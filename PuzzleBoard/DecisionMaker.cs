@@ -23,14 +23,21 @@ namespace PuzzleBoard
             _dictionary = dictionary;
         }
 
-        public bool IsPuzzleStillViable(out string reasonForNonViability)
+        public bool IsPuzzleStillViable(out string reasonForNonViability, out PuzzleExceptionRanking ranking)
         {
             int blanksRemaining = _board.BlanksRemaining();
+            reasonForNonViability = string.Empty;
+            ranking = PuzzleExceptionRanking.notApplicable;
+
             if (blanksRemaining == 0)
             {
                 reasonForNonViability = string.Empty;
                 return true;
             }
+
+            ranking = (_dictionary.StartingWordCount() > 42)
+                ? PuzzleExceptionRanking.canRetry
+                : PuzzleExceptionRanking.noRetry;
 
             if (_dictionary.IsEmpty())
             {
@@ -57,7 +64,7 @@ namespace PuzzleBoard
                 return false;
             }
 
-            reasonForNonViability = string.Empty;
+            ranking = PuzzleExceptionRanking.notApplicable;
             return true;
         }
 

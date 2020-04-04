@@ -8,9 +8,10 @@ namespace WordChooser
     {
         private IWordSource _wordSource;
         private int _maxLength = 0;
+        private int _minLength = int.MaxValue;
         private Dictionary<int, Stack<string>> _sourceLists
             = new Dictionary<int, Stack<string>>();
-        private int _minLength = int.MaxValue;
+        private int _startingWordCount = 0;
 
         public RelatableWordsDictionary(IWordSource wordSource)
         {
@@ -19,7 +20,7 @@ namespace WordChooser
 
         public void PrepareDictionary()
         {
-            int count = 0;
+            _startingWordCount = 0;
             foreach(var word in _wordSource.GetListOfWords())
             {
                 var length = word.Length;
@@ -30,9 +31,9 @@ namespace WordChooser
                     _sourceLists.Add(length, new Stack<string>());
                 }
                 _sourceLists[length].Push(word);
-                count += 1;
+                _startingWordCount += 1;
             }
-            Console.WriteLine($"Words in dictionary: {count}");
+            Console.WriteLine($"Words in dictionary: {_startingWordCount}");
         }
 
         public string PopWordOfLength(int length)
@@ -106,5 +107,6 @@ namespace WordChooser
             return true;
         }
 
+        public int StartingWordCount() => _startingWordCount;
     }
 }

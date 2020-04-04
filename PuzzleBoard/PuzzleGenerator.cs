@@ -47,9 +47,9 @@ namespace PuzzleBoard
                 {
                     _lettersGrid = AttemptAddingWord(_lettersGrid, _wordGenerator);
                 }
-                if (!_decisionMaker.IsPuzzleStillViable(out string excuse))
+                if (!_decisionMaker.IsPuzzleStillViable(out string excuse, out PuzzleExceptionRanking rank))
                 {
-                    throw new PuzzleException(excuse);
+                    throw new PuzzleException(excuse, rank);
                 }
                 blankSpaces = _lettersGrid.BlanksRemaining();
                 Console.Write($"Added: {_wordsToFind.Count()}, Rejected: {_rejectedWords.Count()}, Blanks: {blankSpaces}   \r");

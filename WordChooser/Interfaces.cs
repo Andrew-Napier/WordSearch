@@ -30,6 +30,7 @@ namespace WordChooser
         int MaxLengthOfWord();
         string PopWordOfLength(int length);
         void PrepareDictionary();
+        int StartingWordCount();
     }
 
     /// <summary>

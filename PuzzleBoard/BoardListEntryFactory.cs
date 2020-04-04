@@ -11,5 +11,26 @@ namespace PuzzleBoard
         {
             return new BoardListEntry(word, position);
         }
+
+        public IBoardListEntry Create(BoardListEntryPoco entry)
+        {
+            var position = new StartingPosition(
+                entry.Row,
+                entry.Column,
+                entry.Directions);
+           
+            return new BoardListEntry(entry.Word, position);
+        }
+
+        public BoardListEntryPoco Transform(IBoardListEntry entry)
+        {
+            return new BoardListEntryPoco
+            {
+                Word = entry.GetWord(),
+                Column = entry.GetPosition().Col,
+                Row = entry.GetPosition().Row,
+                Directions = entry.GetPosition().Direction
+            };
+        }
     }
 }

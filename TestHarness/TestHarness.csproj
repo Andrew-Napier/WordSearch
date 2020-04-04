@@ -8,6 +8,7 @@
   <ItemGroup>
     <ProjectReference Include="..\WordChooser\WordChooser.csproj" />
     <ProjectReference Include="..\PuzzleBoard\PuzzleBoard.csproj" />
+    <ProjectReference Include="..\PuzzleStorage\PuzzleStorage.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />

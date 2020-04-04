@@ -17,7 +17,7 @@ namespace PuzzleBoard
 
             if (puzzleSize.Max() > _weights.Length)
             {
-                throw new PuzzleException($"Random picker cannot pick words > {_weights.Length} characters long");
+                throw new PuzzleException($"Random picker cannot pick words > {_weights.Length} characters long", 0);
             }
 
             for (int i = 0; i < puzzleSize.Max(); i++)

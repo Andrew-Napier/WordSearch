@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestHarness", "TestHarness\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuzzleBoard", "PuzzleBoard\PuzzleBoard.csproj", "{9BC35BF1-1523-4511-A116-BC6024BC41DC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuzzleStorage", "PuzzleStorage\PuzzleStorage.csproj", "{AA4C96D7-3AFD-48AA-B324-1946F5D7FF7E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,5 +27,9 @@ Global
 		{9BC35BF1-1523-4511-A116-BC6024BC41DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9BC35BF1-1523-4511-A116-BC6024BC41DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9BC35BF1-1523-4511-A116-BC6024BC41DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA4C96D7-3AFD-48AA-B324-1946F5D7FF7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA4C96D7-3AFD-48AA-B324-1946F5D7FF7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA4C96D7-3AFD-48AA-B324-1946F5D7FF7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA4C96D7-3AFD-48AA-B324-1946F5D7FF7E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
