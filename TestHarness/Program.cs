@@ -16,26 +16,41 @@ namespace TestHarness
             IServiceCollection serviceCollection = new ServiceCollection();
             ConfigureServices(serviceCollection);
             ServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
+
+            HarnessVerifier(serviceProvider);
+        }
+
+        private static void HarnessVerifier(IServiceProvider serviceProvider)
+        {
+            for(int i = 1; i <= 25; i++)
+            {
+                var bl = new BoardLoader(serviceProvider.GetRequiredService<IBoard>(),
+                    serviceProvider.GetRequiredService<IBoardListEntryFactory>());
+                IBoard game = bl.Load(i);
+                game.Display();
+                Console.WriteLine();
+            }
+        }
+
+        static void HarnessGenerator(ServiceProvider serviceProvider)
+        {
             int counter = 1;
 
             Console.WriteLine("Puzzle Generator...");
-            ConsoleKeyInfo key;
-            do
+            while (counter <= 25)
             {
                 var rwd = serviceProvider.GetRequiredService<IRelatableWordsDictionary>();
                 var puzzle = BuildPuzzleWithRetries(serviceProvider, rwd);
 
                 if (puzzle != null)
-                { 
+                {
                     puzzle.Display();
                     var saver = new BoardSaver(puzzle, serviceProvider.GetRequiredService<IBoardListEntryFactory>());
                     saver.Save(counter);
                     counter++;
                 }
-                Console.WriteLine("Try again? (y/n)");
-                key = Console.ReadKey();
                 Console.WriteLine();
-            } while (!"Nn".Contains(key.KeyChar));
+            }
         }
 
         private static IBoard BuildPuzzleWithRetries(

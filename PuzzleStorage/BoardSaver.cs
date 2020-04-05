@@ -7,19 +7,13 @@ using PuzzleBoard;
 
 namespace PuzzleStorage
 {
-    public class BoardStorageClass
-    {
-        public BoardListEntryPoco[] Entries { get; set; }
-        public string Answer { get; set; }
-    }
-
     public class BoardSaver
     {
-        private BoardStorageClass store;
+        private BoardStorage store;
 
         public BoardSaver(IBoard puzzle, IBoardListEntryFactory factory)
         {
-            store = new BoardStorageClass();
+            store = new BoardStorage();
             store.Answer = puzzle.List().GetBlattedWord();
             store.Entries =
                 (from entry in puzzle.List().GetEntries()
