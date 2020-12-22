@@ -20,7 +20,7 @@
             }
             else
             {
-                if (opt1.Intersects <= opt2.Intersects)
+                if (opt1.Intersects > opt2.Intersects)
                     return opt1;
                 else
                     return opt2;

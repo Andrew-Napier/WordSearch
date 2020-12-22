@@ -14,14 +14,12 @@ namespace PuzzleBoard
         {
             _boardList = boardList;
             _size = size.Max();
-            _lettersGrid = new char[_size,_size];
-            for(int r = 0; r < _size; r++)
-            {
-                for(int c = 0; c < _size; c++)
+            _lettersGrid = new char[_size, _size];
+
+            Enumerate((r, c) =>
                 {
                     _lettersGrid[r, c] = '.';
-                }
-            }
+                });
         }
 
         public Board(char[,] source, IBoardList boardList)
@@ -34,17 +32,25 @@ namespace PuzzleBoard
         public int BlanksRemaining()
         {
             var count = 0;
-            for(int r = 0; r < _size; r++)
-            {
-                for(int c = 0; c < _size; c++)
+            Enumerate((r, c) =>
                 {
-                    if (IsEmpty(r,c))
+                    if (IsEmpty(r, c))
                     {
                         count++;
                     }
+                });
+            return count;
+        }
+
+        public void Enumerate(Action<int, int> action)
+        {
+            for (int r = 0; r < _size; r++)
+            {
+                for (int c = 0; c < _size; c++)
+                {
+                    action(r, c);
                 }
             }
-            return count;
         }
 
         public bool IsEmpty(int r, int c)
@@ -86,32 +92,27 @@ namespace PuzzleBoard
             letters.Sort();
 
             var i = 0;
-            for (int row = 0; row < _size; row++)
-            {
-                for (int col = 0; col < _size; col++)
+            Enumerate((r, c) =>
                 {
-                    if (IsEmpty(row,col))
+                    if (IsEmpty(r, c))
                     {
-                        newGrid[row, col] = letters[i];
+                        newGrid[r, c] = letters[i];
                         i++;
                     }
-                    if (i >= letters.Count) break;
-                }
-            }
+                    if (i >= letters.Count) return;
+                });
+
             return new Board(newGrid, _boardList);
         }
 
         public void Display()
         {
             Console.WriteLine();
-            for (int r = 0; r < _size; r++)
-            {
-                for (int c = 0; c < _size; c++)
+            Enumerate((r, c) =>
                 {
-                    Console.Write($"{_lettersGrid[r, c]} ");
-                }
-                Console.WriteLine();                  
-            }
+                    Console.Write($"{_lettersGrid[r, c]}");
+                    Console.Write((c == _size - 1) ? "\n" : " ");
+                });
             _boardList.Sort();
             foreach (var entry in _boardList.GetEntries())
             {

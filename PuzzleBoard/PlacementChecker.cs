@@ -17,9 +17,7 @@ namespace PuzzleBoard
         public IEnumerable<StartingPosition> GetPossibilities(IBoard lettersGrid, string word)
         {
             var positions = new List<StartingPosition>();
-            for (int r = 0; r < _maxSize; r++)
-            {
-                for (int c = 0; c < _maxSize; c++)
+            lettersGrid.Enumerate((r, c) =>
                 {
                     foreach (WordDirections d in Enum.GetValues(typeof(WordDirections)))
                     {
@@ -51,8 +49,7 @@ namespace PuzzleBoard
                             }
                         }
                     }
-                }
-            }
+                });
 
             return positions;
         }

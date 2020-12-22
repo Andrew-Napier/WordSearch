@@ -17,12 +17,12 @@ namespace TestHarness
             ConfigureServices(serviceCollection);
             ServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
 
-            HarnessVerifier(serviceProvider);
+            HarnessGenerator(serviceProvider);
         }
 
         private static void HarnessVerifier(IServiceProvider serviceProvider)
         {
-            for(int i = 1; i <= 25; i++)
+            for (int i = 1; i <= 25; i++)
             {
                 var bl = new BoardLoader(serviceProvider.GetRequiredService<IBoard>(),
                     serviceProvider.GetRequiredService<IBoardListEntryFactory>());
@@ -37,7 +37,7 @@ namespace TestHarness
             int counter = 1;
 
             Console.WriteLine("Puzzle Generator...");
-            while (counter <= 25)
+            while (counter <= 2)
             {
                 var rwd = serviceProvider.GetRequiredService<IRelatableWordsDictionary>();
                 var puzzle = BuildPuzzleWithRetries(serviceProvider, rwd);
