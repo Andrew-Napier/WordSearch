@@ -1,5 +1,5 @@
-﻿using System;
-using WordChooser;
+﻿using WordChooser;
+#nullable enable
 
 namespace PuzzleBoard
 {

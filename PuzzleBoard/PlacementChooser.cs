@@ -1,4 +1,6 @@
-﻿namespace PuzzleBoard
+﻿#nullable enable
+
+namespace PuzzleBoard
 {
     public class PlacementChooser : IPlacementChooser
     {

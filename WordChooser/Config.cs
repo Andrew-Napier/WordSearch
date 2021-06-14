@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
+#nullable enable
 
 namespace WordChooser
 {

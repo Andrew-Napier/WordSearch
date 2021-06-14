@@ -1,4 +1,6 @@
 ﻿using System;
+#nullable enable
+
 namespace PuzzleBoard
 {
     public enum PuzzleExceptionRanking

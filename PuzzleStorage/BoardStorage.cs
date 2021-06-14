@@ -1,5 +1,5 @@
-﻿using System;
-using PuzzleBoard;
+﻿using PuzzleBoard;
+#nullable enable
 
 namespace PuzzleStorage
 {
