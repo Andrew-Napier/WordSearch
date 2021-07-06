@@ -23,56 +23,56 @@ namespace PuzzleBoard
             _dictionary = dictionary;
         }
 
-        public bool IsPuzzleStillViable(out string reasonForNonViability, out PuzzleExceptionRanking ranking)
+        public void AssessCircuitBreaker()
         {
+
             if (_board == null || _dictionary == null)
             {
-                ranking = PuzzleExceptionRanking.noRetry;
-                reasonForNonViability = "Board or dictionary is missing.";
-                return false;
+                throw new PuzzleException(
+                    "Board or dictionary is missing.",
+                    PuzzleExceptionRanking.noRetry);
             }
 
             int blanksRemaining = _board.BlanksRemaining();
-            reasonForNonViability = string.Empty;
-            ranking = PuzzleExceptionRanking.notApplicable;
 
             if (blanksRemaining == 0)
             {
-                reasonForNonViability = string.Empty;
-                return true;
+                return;
             }
 
-            ranking = (_dictionary.StartingWordCount() > 42)
+            PuzzleExceptionRanking ranking =
+                (_dictionary.StartingWordCount() > 42)
                 ? PuzzleExceptionRanking.canRetry
                 : PuzzleExceptionRanking.noRetry;
 
             if (_dictionary.IsEmpty())
             {
-                reasonForNonViability = "No more words to choose from";
-                return false;
+                throw new PuzzleException(
+                    "No more words to choose from",
+                    ranking);
             }
 
             if (blanksRemaining < 4)
             {
-                reasonForNonViability = "Not enough space for word";
-                return false;
+                throw new PuzzleException(
+                    "Not enough space for word",
+                    ranking);
             }
 
             if (blanksRemaining < _dictionary.MinLengthOfWord())
             {
-                reasonForNonViability = "No word short enough to blat";
-                return false;
+                throw new PuzzleException(
+                    "No word short enough to blat",
+                    ranking);
             }
 
             if (blanksRemaining > _dictionary.MaxLengthOfWord() &&
                 _dictionary.MinLengthOfWord() > _puzzleSize.Max())
             {
-                reasonForNonViability = "Too many blanks to blat, no words short enough to add";
-                return false;
+                throw new PuzzleException(
+                    "Too many blanks to blat, no words short enough to add",
+                    ranking);
             }
-
-            ranking = PuzzleExceptionRanking.notApplicable;
-            return true;
         }
 
         public bool IsTimeToAttemptBlattingWord()

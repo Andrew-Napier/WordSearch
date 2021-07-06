@@ -74,7 +74,7 @@ namespace PuzzleBoard
         void Configure(IBoard board, IRelatableWordsDictionary dictionary);
         bool IsTimeToAttemptBlattingWord();
         bool IsTimeToTryAddingWord();
-        bool IsPuzzleStillViable(out string reasonForNonViability, out PuzzleExceptionRanking ranking);
+        public void AssessCircuitBreaker();
     }
 
     /// <summary>
