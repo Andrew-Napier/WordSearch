@@ -64,7 +64,16 @@ namespace TestHarness
                 try
                 {
                     rwd.PrepareDictionary();
-                    var pg = new PuzzleGenerator(serviceProvider, rwd);
+                    var pg = new PuzzleGenerator(
+                        serviceProvider.GetRequiredService<IBoard>(),
+                        serviceProvider.GetRequiredService<PlacementChecker>(),
+                        serviceProvider.GetRequiredService<IPuzzleSize>(),
+                        rwd,
+                        serviceProvider.GetRequiredService<IDecisionMaker>(),
+                        serviceProvider.GetRequiredService<IDirectionCounts>(),
+                        serviceProvider.GetRequiredService<IRandomPicker>(),
+                        serviceProvider.GetRequiredService<IBoardList>());
+
                     var puzzle = pg.Execute();
                     return puzzle;
                 }
