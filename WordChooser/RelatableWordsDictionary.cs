@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+#nullable enable
 
 namespace WordChooser
 {
@@ -43,7 +44,7 @@ namespace WordChooser
                 return string.Empty;
             }
 
-            if (!_sourceLists[length].TryPop(out string value))
+            if (!_sourceLists[length].TryPop(out string? value))
             {
                 _sourceLists.Remove(length);
                 return string.Empty;
@@ -90,7 +91,7 @@ namespace WordChooser
         public bool IsWordAvailable(int length)
         {
             return _sourceLists.ContainsKey(length)
-                && _sourceLists[length].TryPeek(out string value);
+                && _sourceLists[length].TryPeek(out string? value);
         }
 
         public int MaxLengthOfWord() => _maxLength;

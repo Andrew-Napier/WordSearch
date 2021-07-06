@@ -1,15 +1,14 @@
-﻿
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using WeCantSpell.Hunspell;
+#nullable enable
 
 namespace WordChooser
 {
 
     public class WordFilter : IWordFilter
     {
-        private  WordList _dictionary = null;
+        private  WordList _dictionary;
 
         public WordFilter()
         {

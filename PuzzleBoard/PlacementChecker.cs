@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+#nullable enable
 
 namespace PuzzleBoard
 {
@@ -19,7 +20,7 @@ namespace PuzzleBoard
             var positions = new List<StartingPosition>();
             lettersGrid.Enumerate((r, c) =>
                 {
-                    foreach (WordDirections d in Enum.GetValues(typeof(WordDirections)))
+                    foreach (WordDirections d in (WordDirections[])Enum.GetValues(typeof(WordDirections)))
                     {
                         if (isWordFitting(word.Length, r, c, d))
                         {

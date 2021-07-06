@@ -1,11 +1,13 @@
-﻿namespace PuzzleBoard
+﻿#nullable enable
+
+namespace PuzzleBoard
 {
     public class PlacementChooser : IPlacementChooser
     {
 
-        public StartingPosition ChooseBestPlacementOption(
-            StartingPosition opt1,
-            StartingPosition opt2,
+        public StartingPosition? ChooseBestPlacementOption(
+            StartingPosition? opt1,
+            StartingPosition? opt2,
             IDirectionCounts directionCounts)
         {
             if (opt2 == null) return opt1;
