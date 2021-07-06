@@ -10,7 +10,7 @@ namespace PuzzleBoard
 
         public DirectionCounts()
         {
-            foreach (WordDirections d in Enum.GetValues(typeof(WordDirections)))
+            foreach (WordDirections d in (WordDirections[])Enum.GetValues(typeof(WordDirections)))
             {
                 directionCounts[d] = 0;
             }

@@ -92,9 +92,9 @@ namespace PuzzleBoard
     /// </summary>
     public interface IPlacementChooser
     {
-        public StartingPosition ChooseBestPlacementOption(
-            StartingPosition opt1,
-            StartingPosition opt2,
+        public StartingPosition? ChooseBestPlacementOption(
+            StartingPosition? opt1,
+            StartingPosition? opt2,
             IDirectionCounts directionCounts);
     }
 

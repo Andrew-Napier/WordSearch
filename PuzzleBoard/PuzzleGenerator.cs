@@ -1,6 +1,7 @@
 ﻿using System;
 using WordChooser;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
 #nullable enable
 
 namespace PuzzleBoard
@@ -15,7 +16,7 @@ namespace PuzzleBoard
         private IPuzzleSize _puzzleSize;
         private IRandomPicker _random;
         private IBoardList _wordsToFind;
-        private IBoardList _rejectedWords;
+        private List<string> _rejectedWords = new List<string>();
 
         public PuzzleGenerator(IServiceProvider provider, IRelatableWordsDictionary relatableWordsDictionary)
         {
@@ -26,7 +27,6 @@ namespace PuzzleBoard
             this._decisionMaker = provider.GetService<IDecisionMaker>();
             this._directionCounts = provider.GetRequiredService<IDirectionCounts>();
             this._random = provider.GetRequiredService<IRandomPicker>();
-            this._rejectedWords = provider.GetRequiredService<IBoardList>();
             this._wordsToFind = provider.GetService<IBoardList>();
         }
 
@@ -51,7 +51,7 @@ namespace PuzzleBoard
                     throw new PuzzleException(excuse, rank);
                 }
                 blankSpaces = _lettersGrid.BlanksRemaining();
-                Console.Write($"Added: {_wordsToFind.Count()}, Rejected: {_rejectedWords.Count()}, Blanks: {blankSpaces}   \r");
+                Console.Write($"Added: {_wordsToFind.Count()}, Rejected: {_rejectedWords.Count}, Blanks: {blankSpaces}   \r");
             }
 
             return _lettersGrid;
@@ -77,7 +77,7 @@ namespace PuzzleBoard
             if (_wordsToFind.IsPreexisting(word)) return lettersGrid;
 
             var possibilities = _placeGenerator.GetPossibilities(lettersGrid, word);
-            StartingPosition bestPossible = null;
+            StartingPosition? bestPossible = null;
             foreach (var possible in possibilities)
             {
                 var pc = new PlacementChooser();
@@ -99,7 +99,7 @@ namespace PuzzleBoard
 
         private void AddToRejectedWordList(string word)
         {
-            _rejectedWords.AddWord(word, null);
+            _rejectedWords.Add(word);
         }
 
 

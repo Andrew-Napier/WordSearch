@@ -5,9 +5,9 @@ namespace PuzzleBoard
 {
     public class DecisionMaker : IDecisionMaker
     {
-        private IRelatableWordsDictionary _dictionary;
-        private IBoardList _wordCollection;
-        private IBoard _board;
+        private IRelatableWordsDictionary? _dictionary;
+        private IBoardList? _wordCollection;
+        private IBoard? _board;
         private IPuzzleSize _puzzleSize;
 
 
@@ -25,6 +25,13 @@ namespace PuzzleBoard
 
         public bool IsPuzzleStillViable(out string reasonForNonViability, out PuzzleExceptionRanking ranking)
         {
+            if (_board == null || _dictionary == null)
+            {
+                ranking = PuzzleExceptionRanking.noRetry;
+                reasonForNonViability = "Board or dictionary is missing.";
+                return false;
+            }
+
             int blanksRemaining = _board.BlanksRemaining();
             reasonForNonViability = string.Empty;
             ranking = PuzzleExceptionRanking.notApplicable;
@@ -70,6 +77,10 @@ namespace PuzzleBoard
 
         public bool IsTimeToAttemptBlattingWord()
         {
+            if (_board == null || _wordCollection == null || _dictionary == null)
+            {
+                return false;
+            }
             int blanksToFill = _board.BlanksRemaining();
 
             return _wordCollection.Count() > 15
@@ -79,6 +90,11 @@ namespace PuzzleBoard
 
         public bool IsTimeToTryAddingWord()
         {
+            if (_board == null || _dictionary == null)
+            {
+                return false;
+            }
+
             int blanksToFill = _board.BlanksRemaining();
 
             return blanksToFill > 3

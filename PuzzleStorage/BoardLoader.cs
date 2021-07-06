@@ -24,7 +24,10 @@ namespace PuzzleStorage
             using (StreamReader file = File.OpenText($"puzzle{counter,0:D6}.json"))
             {
                 var value = file.ReadLine();
-                storage = JsonConvert.DeserializeObject<BoardStorage>(value);
+
+                storage = (value != null)
+                    ? JsonConvert.DeserializeObject<BoardStorage>(value)
+                    : new BoardStorage();
             }
             foreach(var entry in storage.Entries)
             {
