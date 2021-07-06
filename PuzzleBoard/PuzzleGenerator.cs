@@ -18,16 +18,24 @@ namespace PuzzleBoard
         private IBoardList _wordsToFind;
         private List<string> _rejectedWords = new List<string>();
 
-        public PuzzleGenerator(IServiceProvider provider, IRelatableWordsDictionary relatableWordsDictionary)
+        public PuzzleGenerator(
+            IBoard lettersGrid,
+            PlacementChecker placeGenerator,
+            IPuzzleSize puzzleSize,
+            IRelatableWordsDictionary relatableWordsDictionary,
+            IDecisionMaker decisionMaker,
+            IDirectionCounts directionCounts,
+            IRandomPicker random,
+            IBoardList wordsToFind)
         {
-            this._lettersGrid = provider.GetRequiredService<IBoard>();
-            this._placeGenerator = provider.GetRequiredService<PlacementChecker>();
-            this._puzzleSize = provider.GetRequiredService<IPuzzleSize>();
+            this._lettersGrid = lettersGrid;
+            this._placeGenerator = placeGenerator;
+            this._puzzleSize = puzzleSize;
             this._wordGenerator = relatableWordsDictionary;
-            this._decisionMaker = provider.GetService<IDecisionMaker>();
-            this._directionCounts = provider.GetRequiredService<IDirectionCounts>();
-            this._random = provider.GetRequiredService<IRandomPicker>();
-            this._wordsToFind = provider.GetService<IBoardList>();
+            this._decisionMaker = decisionMaker;
+            this._directionCounts = directionCounts;
+            this._random = random;
+            this._wordsToFind = wordsToFind;
         }
 
         public IBoard Execute()
