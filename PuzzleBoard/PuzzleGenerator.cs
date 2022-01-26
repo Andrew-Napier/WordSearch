@@ -2,6 +2,8 @@
 using WordChooser;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
+using PuzzleBoard.Domain.Interfaces;
+using PuzzleBoard.Domain.Models;
 #nullable enable
 
 namespace PuzzleBoard

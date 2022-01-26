@@ -1,5 +1,7 @@
 ﻿#nullable enable
 
+using PuzzleBoard.Domain.Models;
+
 namespace PuzzleBoard
 {
     public class PlacementChooser : IPlacementChooser

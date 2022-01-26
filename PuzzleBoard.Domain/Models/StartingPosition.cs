@@ -1,7 +1,7 @@
 ﻿using System;
 #nullable enable
 
-namespace PuzzleBoard
+namespace PuzzleBoard.Domain.Models
 {
     public class StartingPosition
     {

@@ -1,15 +1,15 @@
 ﻿using System;
+using System.Linq;
 #nullable enable
 
-namespace PuzzleBoard
+namespace PuzzleBoard.Domain.Models
 {
     public enum WordDirections
     {
         north, northEast, east, southEast, south, southWest, West, northWest
-
     }
 
-    public static class WordDirectionMethods
+    public static class WordDirection
     {
         public static int RowDirection(this WordDirections self)
         {
@@ -43,6 +43,27 @@ namespace PuzzleBoard
                     return 1;
                 default:
                     return 0;
+            }
+        }
+
+        public static void Enumerate(Func<WordDirections, bool> func, bool reverse = false)
+        {
+            var eachDirection = (WordDirections[])Enum.GetValues(typeof(WordDirections));
+            if (reverse)
+            {
+                foreach (WordDirections d in eachDirection.Reverse())
+                {
+                    if (!func(d))
+                        break;
+                }
+            }
+            else
+            {
+                foreach (WordDirections d in eachDirection)
+                {
+                    if (!func(d))
+                        break;
+                }
             }
         }
     }

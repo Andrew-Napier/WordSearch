@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using PuzzleBoard.Domain.Interfaces;
+using PuzzleBoard.Domain.Models;
 
 #nullable enable
 
@@ -62,6 +64,9 @@ namespace PuzzleBoard
 
         public bool IsMatching(char letter, int row, int col)
         {
+            if (row >= _size || col >= _size) return false;
+            if (row < 0 || col < 0) return false;
+
             return _lettersGrid[row, col] == letter;
         }
 

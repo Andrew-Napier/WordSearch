@@ -1,10 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using HtmlAgilityPack;
 using Microsoft.Extensions.DependencyInjection;
 using PuzzleBoard;
+using PuzzleBoard.Domain.Interfaces;
+using PuzzleBoard.Domain.Models;
 using PuzzleStorage;
 using WordChooser;
+#nullable enable
+
 
 namespace TestHarness
 {
@@ -17,18 +23,29 @@ namespace TestHarness
             ConfigureServices(serviceCollection);
             ServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
 
-            HarnessGenerator(serviceProvider);
+            //HarnessGenerator(serviceProvider);
+            HarnessVerifier(serviceProvider);
         }
 
         private static void HarnessVerifier(IServiceProvider serviceProvider)
         {
+            var answers = new List<string>();
             for (int i = 1; i <= 25; i++)
             {
                 var bl = new BoardLoader(serviceProvider.GetRequiredService<IBoard>(),
                     serviceProvider.GetRequiredService<IBoardListEntryFactory>());
                 IBoard game = bl.Load(i);
-                game.Display();
-                Console.WriteLine();
+                if (IsPuzzleValid(game))
+                {
+                    Console.WriteLine($"Puzzle {i}");
+                    answers.Add($"{i}: {game.List().GetBlattedWord()}");
+                    game.Display();
+                    Console.WriteLine();
+                }
+                else
+                {
+                    Console.WriteLine($"Puzzle {i} has integrity issues");
+                }
             }
         }
 
@@ -42,9 +59,10 @@ namespace TestHarness
                 var rwd = serviceProvider.GetRequiredService<IRelatableWordsDictionary>();
                 var puzzle = BuildPuzzleWithRetries(serviceProvider, rwd);
 
-                if (puzzle != null)
+                if (IsPuzzleValid(puzzle))
                 {
-                    puzzle.Display();
+                    Debug.Assert(puzzle != null);
+                    puzzle!.Display();
                     var saver = new BoardSaver(puzzle, serviceProvider.GetRequiredService<IBoardListEntryFactory>());
                     saver.Save(counter);
                     counter++;
@@ -53,7 +71,60 @@ namespace TestHarness
             }
         }
 
-        private static IBoard BuildPuzzleWithRetries(
+        private static bool IsPuzzleValid(IBoard? puzzle)
+        {
+            if (puzzle == null)
+            {
+                return false;
+            }
+
+            var boardList = puzzle.List();
+            bool valid = true;
+            foreach(var entry in boardList.GetEntries())
+            {
+                var wordToFind = entry.GetWord();
+                puzzle.Enumerate((row, col) =>
+                {
+                    int r = 10 - row;
+                    int c = 10 - col;
+                    if (valid)
+                    {
+                        WordDirection.Enumerate((d) =>
+                        {
+                            // if wordToFind.isFoundAt(r,c,d)
+                            //      && entry.GetPosition != currentPosition
+                            //     valid = false;
+                            bool works = true;
+                            for (int l = 0; l < wordToFind.Length; l++)
+                            {
+                                works = puzzle.IsMatching(wordToFind[l], r, c);
+                                if (!works) break;
+
+                                r += d.RowDirection();
+                                c += d.ColDirection();
+                            }
+                            if (works)
+                            {
+                                var pos = entry.GetPosition();
+                                if (pos.Col != (10 - col)
+                                    || pos.Row != (10 - row)
+                                    || pos.Direction != d)
+                                {
+                                    Console.WriteLine($"Found match for {wordToFind} at [{10 - col},{10 - row}], but was meant to be at: [{pos.Col},{pos.Row}]");
+                                    valid = false;
+                                    return false;
+                                }
+                            }
+                            return true;
+                        },
+                            true);
+                    }
+                });
+            }
+            return true;
+        }
+
+        private static IBoard? BuildPuzzleWithRetries(
             IServiceProvider serviceProvider,
             IRelatableWordsDictionary rwd)
         {

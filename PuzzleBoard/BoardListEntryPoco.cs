@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using PuzzleBoard.Domain.Models;
 #nullable enable
 
 

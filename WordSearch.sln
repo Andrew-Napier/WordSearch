@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuzzleBoard", "PuzzleBoard\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuzzleStorage", "PuzzleStorage\PuzzleStorage.csproj", "{AA4C96D7-3AFD-48AA-B324-1946F5D7FF7E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuzzleBoard.Domain", "PuzzleBoard.Domain\PuzzleBoard.Domain.csproj", "{397ACB1E-8C31-4076-BF49-C6D5007B77EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,5 +69,17 @@ Global
 		{AA4C96D7-3AFD-48AA-B324-1946F5D7FF7E}.Debug|iPhone.Build.0 = Debug|Any CPU
 		{AA4C96D7-3AFD-48AA-B324-1946F5D7FF7E}.Release|iPhone.ActiveCfg = Release|Any CPU
 		{AA4C96D7-3AFD-48AA-B324-1946F5D7FF7E}.Release|iPhone.Build.0 = Release|Any CPU
+		{397ACB1E-8C31-4076-BF49-C6D5007B77EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{397ACB1E-8C31-4076-BF49-C6D5007B77EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{397ACB1E-8C31-4076-BF49-C6D5007B77EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{397ACB1E-8C31-4076-BF49-C6D5007B77EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{397ACB1E-8C31-4076-BF49-C6D5007B77EC}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{397ACB1E-8C31-4076-BF49-C6D5007B77EC}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{397ACB1E-8C31-4076-BF49-C6D5007B77EC}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{397ACB1E-8C31-4076-BF49-C6D5007B77EC}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{397ACB1E-8C31-4076-BF49-C6D5007B77EC}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{397ACB1E-8C31-4076-BF49-C6D5007B77EC}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{397ACB1E-8C31-4076-BF49-C6D5007B77EC}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{397ACB1E-8C31-4076-BF49-C6D5007B77EC}.Release|iPhone.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

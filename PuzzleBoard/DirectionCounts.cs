@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using PuzzleBoard.Domain.Models;
 #nullable enable
 
 namespace PuzzleBoard

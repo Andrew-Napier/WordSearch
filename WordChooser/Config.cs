@@ -1,4 +1,5 @@
-﻿using System.Collections.Specialized;
+﻿using System;
+using System.Collections.Specialized;
 #nullable enable
 
 namespace WordChooser
@@ -14,11 +15,11 @@ namespace WordChooser
             }
         }
 
-        public string SourceUrl() => this["sourceUrl"];
-        public string XnonTextClass() => this["xNonTextClass"];
-        public string XtextPath() => this["xPath"];
-        public string XtitlePath() => this["xTitlePath"];
-        public char[] WhiteSpace() => this["whiteSpace"].ToCharArray();
-        public string[] ExclusionList() => this["exclusionList"].Split(",");
+        public string SourceUrl() => this["sourceUrl"] ?? throw new ArgumentNullException();
+        public string XnonTextClass() => this["xNonTextClass"] ?? throw new ArgumentNullException();
+        public string XtextPath() => this["xPath"] ?? throw new ArgumentNullException();
+        public string XtitlePath() => this["xTitlePath"] ?? throw new ArgumentNullException();
+        public char[] WhiteSpace() => this["whiteSpace"]?.ToCharArray() ?? throw new ArgumentNullException();
+        public string[] ExclusionList() => this["exclusionList"]?.Split(",") ?? throw new ArgumentNullException();
     }
 }
