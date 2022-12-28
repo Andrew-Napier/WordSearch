@@ -18,23 +18,17 @@ namespace PuzzleBoard.Domain.Factories
 
         public IBoardListEntry Create(BoardListEntry entry)
         {
+            // TODO: This smells.  Is this just a copier for IBoardListEntry?
             var position = new StartingPosition(
-                entry.Row,
-                entry.Column,
-                entry.Directions);
+                entry.GetPosition());
            
-            return new BoardListEntry(entry.Word, position);
+            return new BoardListEntry(entry.GetWord(), position);
         }
 
         public BoardListEntry Transform(IBoardListEntry entry)
         {
-            return new BoardListEntry
-            {
-                Word = entry.GetWord(),
-                Column = entry.GetPosition().Col,
-                Row = entry.GetPosition().Row,
-                Directions = entry.GetPosition().Direction
-            };
+            // TODO: Not sure IBoardListEntry <==> BoardListEnrty is still necessary
+            return new BoardListEntry(entry.GetWord(), entry.GetPosition());
         }
     }
 }

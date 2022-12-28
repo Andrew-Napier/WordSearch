@@ -5,20 +5,4 @@
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="LightWebNetScraper" Version="0.0.2" />
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.23" />
-    <PackageReference Include="WeCantSpell.Hunspell" Version="3.0.1" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="SpellCheck\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="SpellCheck\en_GB.dic">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="SpellCheck\en_GB.aff">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
 </Project>

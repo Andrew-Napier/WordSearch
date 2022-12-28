@@ -36,7 +36,7 @@ namespace PuzzleBoard.Domain.Models
             _intersects = intersects;
         }
 
-        public StartingPosition(StartingPosition source, int intersects)
+        public StartingPosition(StartingPosition source, int intersects = 0)
         {
             _row = source._row;
             _col = source._col;

@@ -1,5 +1,6 @@
 ﻿#nullable enable
 
+using PuzzleBoard.Domain.Interfaces;
 using PuzzleBoard.Domain.Models;
 
 namespace PuzzleBoard

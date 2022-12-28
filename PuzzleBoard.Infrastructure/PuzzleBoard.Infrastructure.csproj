@@ -9,9 +9,29 @@
   <ItemGroup>
     <None Remove="Services\" />
     <None Remove="Config\" />
+    <None Remove="SpellCheck\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />
     <Folder Include="Config\" />
+    <Folder Include="SpellCheck\" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="SpellCheck\en_GB.aff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SpellCheck\en_GB.dic">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PuzzleBoard.Domain\PuzzleBoard.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LightWebNetScraper" Version="0.0.2" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.23" />
+    <PackageReference Include="WeCantSpell.Hunspell" Version="3.0.1" />
+  </ItemGroup>
+
 </Project>
