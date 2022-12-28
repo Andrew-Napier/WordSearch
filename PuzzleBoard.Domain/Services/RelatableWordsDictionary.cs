@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using PuzzleBoard.Domain.Interfaces;
 #nullable enable
 
-namespace WordChooser
+namespace PuzzleBoard.Domain.Services
 {
 
     public class RelatableWordsDictionary : IRelatableWordsDictionary
@@ -22,7 +23,7 @@ namespace WordChooser
         public void PrepareDictionary()
         {
             _startingWordCount = 0;
-            foreach(var word in _wordSource.GetListOfWords())
+            foreach (var word in _wordSource.GetListOfWords())
             {
                 var length = word.Length;
                 _maxLength = Math.Max(length, _maxLength);
@@ -99,7 +100,7 @@ namespace WordChooser
 
         public bool IsEmpty()
         {
-            foreach(var entry in _sourceLists.Values)
+            foreach (var entry in _sourceLists.Values)
             {
                 if (entry.Count > 0)
                     return false;

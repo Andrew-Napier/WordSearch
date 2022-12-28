@@ -13,8 +13,10 @@ namespace PuzzleBoard.Domain.Models
             this.position = position;
         }
 
-        public int Row { get; internal set; }
-        public int Column { get; internal set; }
         public WordDirections Directions { get; internal set; }
+
+        public StartingPosition GetPosition() => this.position;
+
+        public string GetWord() => this.word;
     }
 }

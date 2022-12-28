@@ -1,5 +1,4 @@
 ﻿using PuzzleBoard.Domain.Interfaces;
-using WordChooser;
 #nullable enable
 
 namespace PuzzleBoard
