@@ -3,7 +3,7 @@ using PuzzleBoard.Domain.Models;
 #nullable enable
 
 
-namespace PuzzleBoard
+namespace PuzzleBoard.Application.Models
 {
     public class BoardListEntryPoco
     {

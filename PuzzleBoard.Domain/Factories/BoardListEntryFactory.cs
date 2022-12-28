@@ -3,7 +3,7 @@ using PuzzleBoard.Domain.Interfaces;
 using PuzzleBoard.Domain.Models;
 #nullable enable
 
-namespace PuzzleBoard
+namespace PuzzleBoard.Domain.Factories
 {
     public class BoardListEntryFactory : IBoardListEntryFactory
     {
@@ -16,7 +16,7 @@ namespace PuzzleBoard
             return new BoardListEntry(word, position);
         }
 
-        public IBoardListEntry Create(BoardListEntryPoco entry)
+        public IBoardListEntry Create(BoardListEntry entry)
         {
             var position = new StartingPosition(
                 entry.Row,
@@ -26,9 +26,9 @@ namespace PuzzleBoard
             return new BoardListEntry(entry.Word, position);
         }
 
-        public BoardListEntryPoco Transform(IBoardListEntry entry)
+        public BoardListEntry Transform(IBoardListEntry entry)
         {
-            return new BoardListEntryPoco
+            return new BoardListEntry
             {
                 Word = entry.GetWord(),
                 Column = entry.GetPosition().Col,
