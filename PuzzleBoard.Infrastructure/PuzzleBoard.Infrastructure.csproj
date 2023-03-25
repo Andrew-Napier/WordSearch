@@ -12,7 +12,6 @@
     <None Remove="SpellCheck\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Services\" />
     <Folder Include="Config\" />
     <Folder Include="SpellCheck\" />
   </ItemGroup>
@@ -30,8 +29,8 @@
 
   <ItemGroup>
     <PackageReference Include="LightWebNetScraper" Version="0.0.2" />
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.23" />
-    <PackageReference Include="WeCantSpell.Hunspell" Version="3.0.1" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.46" />
+    <PackageReference Include="WeCantSpell.Hunspell" Version="4.0.0" />
   </ItemGroup>
 
 </Project>

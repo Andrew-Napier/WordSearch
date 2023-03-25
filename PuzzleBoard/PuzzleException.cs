@@ -1,24 +1,23 @@
 ﻿using System;
 #nullable enable
 
-namespace PuzzleBoard
+namespace PuzzleBoard;
+
+public enum PuzzleExceptionRanking
 {
-    public enum PuzzleExceptionRanking
-    {
-        notApplicable,
-        canRetry,
-        noRetry
-    }
+    notApplicable,
+    canRetry,
+    noRetry
+}
 
-    public class PuzzleException : Exception
-    {
-        public PuzzleExceptionRanking Ranking { get; set; }
-        public PuzzleException()
-        { }
+public class PuzzleException : Exception
+{
+    public PuzzleExceptionRanking Ranking { get; set; }
+    public PuzzleException()
+    { }
 
-        public PuzzleException(string message, PuzzleExceptionRanking rank) : base(message)
-        {
-            Ranking = rank;
-        }
+    public PuzzleException(string message, PuzzleExceptionRanking rank) : base(message)
+    {
+        Ranking = rank;
     }
 }

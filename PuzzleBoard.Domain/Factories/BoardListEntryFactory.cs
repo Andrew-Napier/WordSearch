@@ -3,32 +3,31 @@ using PuzzleBoard.Domain.Interfaces;
 using PuzzleBoard.Domain.Models;
 #nullable enable
 
-namespace PuzzleBoard.Domain.Factories
+namespace PuzzleBoard.Domain.Factories;
+
+public class BoardListEntryFactory : IBoardListEntryFactory
 {
-    public class BoardListEntryFactory : IBoardListEntryFactory
+    public BoardListEntryFactory()
     {
-        public BoardListEntryFactory()
-        {
-        }
+    }
 
-        public IBoardListEntry Create(string word, StartingPosition position)
-        {
-            return new BoardListEntry(word, position);
-        }
+    public IBoardListEntry Create(string word, StartingPosition position)
+    {
+        return new BoardListEntry(word, position);
+    }
 
-        public IBoardListEntry Create(BoardListEntry entry)
-        {
-            // TODO: This smells.  Is this just a copier for IBoardListEntry?
-            var position = new StartingPosition(
-                entry.GetPosition());
+    public IBoardListEntry Create(BoardListEntry entry)
+    {
+        // TODO: This smells.  Is this just a copier for IBoardListEntry?
+        var position = new StartingPosition(
+            entry.GetPosition());
            
-            return new BoardListEntry(entry.GetWord(), position);
-        }
+        return new BoardListEntry(entry.GetWord(), position);
+    }
 
-        public BoardListEntry Transform(IBoardListEntry entry)
-        {
-            // TODO: Not sure IBoardListEntry <==> BoardListEnrty is still necessary
-            return new BoardListEntry(entry.GetWord(), entry.GetPosition());
-        }
+    public BoardListEntry Transform(IBoardListEntry entry)
+    {
+        // TODO: Not sure IBoardListEntry <==> BoardListEnrty is still necessary
+        return new BoardListEntry(entry.GetWord(), entry.GetPosition());
     }
 }

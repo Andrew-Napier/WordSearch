@@ -1,13 +1,10 @@
 ﻿using System;
-namespace PuzzleBoard.Domain.Interfaces
+namespace PuzzleBoard.Domain.Interfaces;
+
+/// <summary>
+/// Not quite config, not quite a constant
+/// </summary>
+public interface IPuzzleSize
 {
-    /// <summary>
-    /// Not quite config, not quite a constant
-    /// </summary>
-    public interface IPuzzleSize
-    {
-        public int Max();
-    }
-
+    public int Max();
 }
-

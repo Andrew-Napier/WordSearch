@@ -1,25 +1,25 @@
 ﻿using System;
 using System.Collections.Specialized;
+using PuzzleBoard.Domain.Interfaces;
+
 #nullable enable
 
-namespace WordChooser
+namespace WordChooser;
+
+public class Config : NameValueCollection, IConfig
 {
-
-    public class Config : NameValueCollection, IConfig
+    public Config(NameValueCollection config)
     {
-        public Config(NameValueCollection config)
+        foreach(var key in config.AllKeys)
         {
-            foreach(var key in config.AllKeys)
-            {
-                this[key] = config[key];
-            }
+            this[key] = config[key];
         }
-
-        public string SourceUrl() => this["sourceUrl"] ?? throw new ArgumentNullException();
-        public string XnonTextClass() => this["xNonTextClass"] ?? throw new ArgumentNullException();
-        public string XtextPath() => this["xPath"] ?? throw new ArgumentNullException();
-        public string XtitlePath() => this["xTitlePath"] ?? throw new ArgumentNullException();
-        public char[] WhiteSpace() => this["whiteSpace"]?.ToCharArray() ?? throw new ArgumentNullException();
-        public string[] ExclusionList() => this["exclusionList"]?.Split(",") ?? throw new ArgumentNullException();
     }
+
+    public string SourceUrl() => this["sourceUrl"] ?? throw new ArgumentNullException();
+    public string XnonTextClass() => this["xNonTextClass"] ?? throw new ArgumentNullException();
+    public string XtextPath() => this["xPath"] ?? throw new ArgumentNullException();
+    public string XtitlePath() => this["xTitlePath"] ?? throw new ArgumentNullException();
+    public char[] WhiteSpace() => this["whiteSpace"]?.ToCharArray() ?? throw new ArgumentNullException();
+    public string[] ExclusionList() => this["exclusionList"]?.Split(",") ?? throw new ArgumentNullException();
 }

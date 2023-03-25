@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
-using HtmlAgilityPack;
 using Microsoft.Extensions.DependencyInjection;
 using PuzzleBoard;
 using PuzzleBoard.Domain.Interfaces;
@@ -11,84 +10,84 @@ using PuzzleBoard.Domain.Services;
 #nullable enable
 
 
-namespace TestHarness
+namespace TestHarness;
+
+class Program
 {
-    class Program
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
+
+        IServiceCollection serviceCollection = new ServiceCollection();
+        ConfigureServices(serviceCollection);
+        ServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
+
+        //HarnessGenerator(serviceProvider);
+        HarnessVerifier(serviceProvider);
+    }
+
+    private static void HarnessVerifier(IServiceProvider serviceProvider)
+    {
+        var answers = new List<string>();
+        for (int i = 1; i <= 25; i++)
         {
-
-            IServiceCollection serviceCollection = new ServiceCollection();
-            ConfigureServices(serviceCollection);
-            ServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
-
-            //HarnessGenerator(serviceProvider);
-            HarnessVerifier(serviceProvider);
-        }
-
-        private static void HarnessVerifier(IServiceProvider serviceProvider)
-        {
-            var answers = new List<string>();
-            for (int i = 1; i <= 25; i++)
+            var bl = new BoardLoader(serviceProvider.GetRequiredService<IBoard>(),
+                serviceProvider.GetRequiredService<IBoardListEntryFactory>());
+            IBoard game = bl.Load(i);
+            if (IsPuzzleValid(game))
             {
-                var bl = new BoardLoader(serviceProvider.GetRequiredService<IBoard>(),
-                    serviceProvider.GetRequiredService<IBoardListEntryFactory>());
-                IBoard game = bl.Load(i);
-                if (IsPuzzleValid(game))
-                {
-                    Console.WriteLine($"Puzzle {i}");
-                    answers.Add($"{i}: {game.List().GetBlattedWord()}");
-                    game.Display();
-                    Console.WriteLine();
-                }
-                else
-                {
-                    Console.WriteLine($"Puzzle {i} has integrity issues");
-                }
-            }
-        }
-
-        static void HarnessGenerator(ServiceProvider serviceProvider)
-        {
-            int counter = 1;
-
-            Console.WriteLine("Puzzle Generator...");
-            while (counter <= 2)
-            {
-                var rwd = serviceProvider.GetRequiredService<IRelatableWordsDictionary>();
-                var puzzle = BuildPuzzleWithRetries(serviceProvider, rwd);
-
-                if (IsPuzzleValid(puzzle))
-                {
-                    Debug.Assert(puzzle != null);
-                    puzzle!.Display();
-                    var saver = new BoardSaver(puzzle, serviceProvider.GetRequiredService<IBoardListEntryFactory>());
-                    saver.Save(counter);
-                    counter++;
-                }
+                Console.WriteLine($"Puzzle {i}");
+                answers.Add($"{i}: {game.List().GetBlattedWord()}");
+                game.Display();
                 Console.WriteLine();
             }
+            else
+            {
+                Console.WriteLine($"Puzzle {i} has integrity issues");
+            }
+        }
+    }
+
+    static void HarnessGenerator(ServiceProvider serviceProvider)
+    {
+        int counter = 1;
+
+        Console.WriteLine("Puzzle Generator...");
+        while (counter <= 2)
+        {
+            var rwd = serviceProvider.GetRequiredService<IRelatableWordsDictionary>();
+            var puzzle = BuildPuzzleWithRetries(serviceProvider, rwd);
+
+            if (IsPuzzleValid(puzzle))
+            {
+                Debug.Assert(puzzle != null);
+                puzzle!.Display();
+                var saver = new BoardSaver(puzzle, serviceProvider.GetRequiredService<IBoardListEntryFactory>());
+                saver.Save(counter);
+                counter++;
+            }
+            Console.WriteLine();
+        }
+    }
+
+    private static bool IsPuzzleValid(IBoard? puzzle)
+    {
+        if (puzzle == null)
+        {
+            return false;
         }
 
-        private static bool IsPuzzleValid(IBoard? puzzle)
+        var boardList = puzzle.List();
+        bool valid = true;
+        foreach(var entry in boardList.GetEntries())
         {
-            if (puzzle == null)
+            var wordToFind = entry.GetWord();
+            puzzle.Enumerate((row, col) =>
             {
-                return false;
-            }
-
-            var boardList = puzzle.List();
-            bool valid = true;
-            foreach(var entry in boardList.GetEntries())
-            {
-                var wordToFind = entry.GetWord();
-                puzzle.Enumerate((row, col) =>
+                int r = 10 - row;
+                int c = 10 - col;
+                if (valid)
                 {
-                    int r = 10 - row;
-                    int c = 10 - col;
-                    if (valid)
-                    {
-                        WordDirection.Enumerate((d) =>
+                    WordDirection.Enumerate((d) =>
                         {
                             // if wordToFind.isFoundAt(r,c,d)
                             //      && entry.GetPosition != currentPosition
@@ -116,65 +115,64 @@ namespace TestHarness
                             }
                             return true;
                         },
-                            true);
-                    }
-                });
-            }
-            return true;
+                        true);
+                }
+            });
         }
+        return true;
+    }
 
-        private static IBoard? BuildPuzzleWithRetries(
-            IServiceProvider serviceProvider,
-            IRelatableWordsDictionary rwd)
+    private static IBoard? BuildPuzzleWithRetries(
+        IServiceProvider serviceProvider,
+        IRelatableWordsDictionary rwd)
+    {
+        int retryCount = 7;
+
+        while (retryCount-- > 0)
         {
-            int retryCount = 7;
-
-            while (retryCount-- > 0)
+            try
             {
-                try
-                {
-                    rwd.PrepareDictionary();
-                    var pg = new PuzzleGenerator(
-                        serviceProvider.GetRequiredService<IBoard>(),
-                        serviceProvider.GetRequiredService<PlacementChecker>(),
-                        serviceProvider.GetRequiredService<IPuzzleSize>(),
-                        rwd,
-                        serviceProvider.GetRequiredService<IDecisionMaker>(),
-                        serviceProvider.GetRequiredService<IDirectionCounts>(),
-                        serviceProvider.GetRequiredService<IRandomPicker>(),
-                        serviceProvider.GetRequiredService<IBoardList>());
+                rwd.PrepareDictionary();
+                var pg = new PuzzleGenerator(
+                    serviceProvider.GetRequiredService<IBoard>(),
+                    serviceProvider.GetRequiredService<PlacementChecker>(),
+                    serviceProvider.GetRequiredService<IPuzzleSize>(),
+                    rwd,
+                    serviceProvider.GetRequiredService<IDecisionMaker>(),
+                    serviceProvider.GetRequiredService<IDirectionCounts>(),
+                    serviceProvider.GetRequiredService<IRandomPicker>(),
+                    serviceProvider.GetRequiredService<IBoardList>());
 
-                    var puzzle = pg.Execute();
-                    return puzzle;
-                }
-                catch (PuzzleException e)
-                {
-                    Console.WriteLine($"\n{e.Message}");
-                    if (e.Ranking == PuzzleExceptionRanking.noRetry)
-                        break;
-                }
+                var puzzle = pg.Execute();
+                return puzzle;
             }
-            return null;
+            catch (PuzzleException e)
+            {
+                Console.WriteLine($"\n{e.Message}");
+                if (e.Ranking == PuzzleExceptionRanking.noRetry)
+                    break;
+            }
         }
+        return null;
+    }
 
-        private static void ConfigureServices(IServiceCollection serviceCollection)
-        {
-            var config = new Config(ConfigurationManager.AppSettings);
+    private static void ConfigureServices(IServiceCollection serviceCollection)
+    {
+        var config = new Config(ConfigurationManager.AppSettings);
 
-            serviceCollection
-                .AddSingleton<HtmlWeb, HtmlWeb>()
-                .AddSingleton<IConfig>(config)
-                .AddSingleton<IPuzzleSize>(new PuzzleSize(11))
-                .AddTransient<IDecisionMaker, DecisionMaker>()
-                .AddSingleton<IWordFilter, WordFilter>()
-                .AddTransient<IWordSource, WordSource>()
-                .AddTransient<IRelatableWordsDictionary, RelatableWordsDictionary>()
-                .AddTransient<IDirectionCounts, DirectionCounts>()
-                .AddTransient<IRandomPicker, RandomPicker>()
-                .AddTransient<IBoard, Board>()
-                .AddTransient<IBoardList, BoardList>()
-                .AddTransient<IBoardListEntryFactory, BoardListEntryFactory>()
-                .AddTransient<PlacementChecker, PlacementChecker>();
-        }
+        serviceCollection
+            .AddSingleton<HtmlWeb, HtmlWeb>()
+            .AddSingleton<IConfig>(config)
+            .AddSingleton<IPuzzleSize>(new PuzzleSize(11))
+            .AddTransient<IDecisionMaker, DecisionMaker>()
+            .AddSingleton<IWordFilter, WordFilter>()
+            .AddTransient<IWordSource, WordSource>()
+            .AddTransient<IRelatableWordsDictionary, RelatableWordsDictionary>()
+            .AddTransient<IDirectionCounts, DirectionCounts>()
+            .AddTransient<IRandomPicker, RandomPicker>()
+            .AddTransient<IBoard, Board>()
+            .AddTransient<IBoardList, BoardList>()
+            .AddTransient<IBoardListEntryFactory, BoardListEntryFactory>()
+            .AddTransient<PlacementChecker, PlacementChecker>();
     }
 }
