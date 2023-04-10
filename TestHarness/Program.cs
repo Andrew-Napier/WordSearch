@@ -7,6 +7,8 @@ using PuzzleBoard;
 using PuzzleBoard.Domain.Interfaces;
 using PuzzleBoard.Domain.Models;
 using PuzzleBoard.Domain.Services;
+using PuzzleStorage;
+
 #nullable enable
 
 

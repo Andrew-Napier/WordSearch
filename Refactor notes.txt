@@ -1,0 +1,2 @@
+Refactor notes
+BoardListEntry : IBoardListEntry

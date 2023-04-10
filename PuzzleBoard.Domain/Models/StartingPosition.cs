@@ -1,8 +1,15 @@
 ﻿using System;
+using PuzzleBoard.Domain.Interfaces;
+
 #nullable enable
 
 namespace PuzzleBoard.Domain.Models;
 
+/// <summary>
+/// In-memory storage class that keeps track of how many intersections a word would have
+/// if it started from the defined location.  Used by the <see cref="IPlacementChooser"/>
+/// to make decisions between possible word locations.
+/// </summary>
 public class StartingPosition
 {
     private readonly int _row, _col, _intersects;

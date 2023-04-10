@@ -4,6 +4,10 @@ using System.Linq;
 
 namespace PuzzleBoard.Domain.Models;
 
+/// <summary>
+/// Uses compass points to indicate the direction a word "travels" in from
+/// its first letter.  (north is up)
+/// </summary>
 public enum WordDirections
 {
     north, northEast, east, southEast, south, southWest, West, northWest
@@ -11,6 +15,11 @@ public enum WordDirections
 
 public static class WordDirection
 {
+    /// <summary>
+    /// Row-index delta based on the given WordDirection.
+    /// </summary>
+    /// <param name="self"></param>
+    /// <returns>-1 to go up, 0 to not change, +1 to go down.</returns>
     public static int RowDirection(this WordDirections self)
     {
         switch (self)
@@ -29,6 +38,11 @@ public static class WordDirection
         }
     }
 
+    /// <summary>
+    /// Column index delta based on the given WordDirection.
+    /// </summary>
+    /// <param name="self"></param>
+    /// <returns>-1 to go left, 0 to not change, +1 to go right</returns>
     public static int ColDirection(this WordDirections self)
     {
         switch (self)
@@ -46,6 +60,11 @@ public static class WordDirection
         }
     }
 
+    /// <summary>
+    /// Iterate through all possible directions, executing a user-defined function in turn.
+    /// </summary>
+    /// <param name="func">A boolean function indicating whether the enumeration should continue (return false to terminate)</param>
+    /// <param name="reverse">Iterates anti-clockwise when true</param>
     public static void Enumerate(Func<WordDirections, bool> func, bool reverse = false)
     {
         var eachDirection = (WordDirections[])Enum.GetValues(typeof(WordDirections));

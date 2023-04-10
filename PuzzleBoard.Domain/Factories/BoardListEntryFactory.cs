@@ -7,10 +7,6 @@ namespace PuzzleBoard.Domain.Factories;
 
 public class BoardListEntryFactory : IBoardListEntryFactory
 {
-    public BoardListEntryFactory()
-    {
-    }
-
     public IBoardListEntry Create(string word, StartingPosition position)
     {
         return new BoardListEntry(word, position);
@@ -27,7 +23,7 @@ public class BoardListEntryFactory : IBoardListEntryFactory
 
     public BoardListEntry Transform(IBoardListEntry entry)
     {
-        // TODO: Not sure IBoardListEntry <==> BoardListEnrty is still necessary
+        // TODO: Not sure IBoardListEntry <==> BoardListEntry is still necessary
         return new BoardListEntry(entry.GetWord(), entry.GetPosition());
     }
 }

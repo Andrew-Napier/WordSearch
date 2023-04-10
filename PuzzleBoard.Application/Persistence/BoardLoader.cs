@@ -27,7 +27,7 @@ public class BoardLoader
         {
             var value = file.ReadLine();
 
-            storage = (value != null)
+            storage = !string.IsNullOrEmpty(value)
                 ? JsonConvert.DeserializeObject<BoardStorage>(value)
                 : new BoardStorage();
         }
