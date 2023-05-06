@@ -17,7 +17,7 @@ public class PlacementChecker
         _random = random;
     }
 
-    public IEnumerable<StartingPosition> GetPossibilities(IBoard lettersGrid, string word)
+    public IEnumerable<StartingPosition> GetPossibilities(IBoardWrite lettersGrid, string word)
     {
         var positions = new List<StartingPosition>();
         lettersGrid.Enumerate((r, c) =>

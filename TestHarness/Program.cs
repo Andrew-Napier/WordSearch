@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
+using HtmlAgilityPack;
 using Microsoft.Extensions.DependencyInjection;
 using PuzzleBoard;
+using PuzzleBoard.Domain.Factories;
 using PuzzleBoard.Domain.Interfaces;
 using PuzzleBoard.Domain.Models;
 using PuzzleBoard.Domain.Services;
+using PuzzleBoard.Infrastructure.Services;
 using PuzzleStorage;
+using WordChooser;
 
 #nullable enable
 
@@ -23,8 +27,8 @@ class Program
         ConfigureServices(serviceCollection);
         ServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
 
-        //HarnessGenerator(serviceProvider);
-        HarnessVerifier(serviceProvider);
+        HarnessGenerator(serviceProvider);
+        //HarnessVerifier(serviceProvider);
     }
 
     private static void HarnessVerifier(IServiceProvider serviceProvider)
@@ -32,9 +36,9 @@ class Program
         var answers = new List<string>();
         for (int i = 1; i <= 25; i++)
         {
-            var bl = new BoardLoader(serviceProvider.GetRequiredService<IBoard>(),
+            var bl = new BoardLoader(serviceProvider.GetRequiredService<IBoardWrite>(),
                 serviceProvider.GetRequiredService<IBoardListEntryFactory>());
-            IBoard game = bl.Load(i);
+            IBoardWrite game = bl.Load(i);
             if (IsPuzzleValid(game))
             {
                 Console.WriteLine($"Puzzle {i}");
@@ -71,7 +75,7 @@ class Program
         }
     }
 
-    private static bool IsPuzzleValid(IBoard? puzzle)
+    private static bool IsPuzzleValid(IBoardWrite? puzzle)
     {
         if (puzzle == null)
         {
@@ -124,7 +128,7 @@ class Program
         return true;
     }
 
-    private static IBoard? BuildPuzzleWithRetries(
+    private static IBoardWrite? BuildPuzzleWithRetries(
         IServiceProvider serviceProvider,
         IRelatableWordsDictionary rwd)
     {
@@ -136,7 +140,7 @@ class Program
             {
                 rwd.PrepareDictionary();
                 var pg = new PuzzleGenerator(
-                    serviceProvider.GetRequiredService<IBoard>(),
+                    serviceProvider.GetRequiredService<IBoardWrite>(),
                     serviceProvider.GetRequiredService<PlacementChecker>(),
                     serviceProvider.GetRequiredService<IPuzzleSize>(),
                     rwd,
@@ -172,7 +176,7 @@ class Program
             .AddTransient<IRelatableWordsDictionary, RelatableWordsDictionary>()
             .AddTransient<IDirectionCounts, DirectionCounts>()
             .AddTransient<IRandomPicker, RandomPicker>()
-            .AddTransient<IBoard, Board>()
+            .AddTransient<IBoardWrite, BoardWrite>()
             .AddTransient<IBoardList, BoardList>()
             .AddTransient<IBoardListEntryFactory, BoardListEntryFactory>()
             .AddTransient<PlacementChecker, PlacementChecker>();

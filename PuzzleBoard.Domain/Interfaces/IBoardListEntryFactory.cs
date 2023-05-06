@@ -10,6 +10,6 @@ namespace PuzzleBoard.Domain.Interfaces;
 public interface IBoardListEntryFactory
 {
     IBoardListEntry Create(string word, StartingPosition position);
-    IBoardListEntry Create(BoardListEntry entry);
-    BoardListEntry Transform(IBoardListEntry entry);
+    IBoardListEntry Create(BoardListEntryPoco entry);
+    BoardListEntryPoco Transform(IBoardListEntry entry);
 }

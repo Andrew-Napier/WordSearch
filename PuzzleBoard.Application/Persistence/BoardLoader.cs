@@ -9,17 +9,17 @@ namespace PuzzleStorage;
 
 public class BoardLoader
 {
-    private IBoard _board;
+    private IBoardWrite _boardWrite;
     private IBoardListEntryFactory _factory;
 
-    public BoardLoader(IBoard startingBoard,
+    public BoardLoader(IBoardWrite startingBoardWrite,
         IBoardListEntryFactory factory)
     {
-        _board = startingBoard;
+        _boardWrite = startingBoardWrite;
         _factory = factory;
     }
 
-    public IBoard Load(int counter)
+    public IBoardWrite Load(int counter)
     {
         BoardStorage storage;
 
@@ -34,11 +34,11 @@ public class BoardLoader
         foreach(var entry in storage.Entries)
         {
             var puzzleAddition = _factory.Create(entry);
-            _board = _board.AddWord(puzzleAddition.GetWord(),
+            _boardWrite = _boardWrite.AddWord(puzzleAddition.GetWord(),
                 puzzleAddition.GetPosition());
         }
-        _board.BlatWord(storage.Answer);
+        _boardWrite.BlatWord(storage.Answer);
 
-        return _board;
+        return _boardWrite;
     }
 }

@@ -9,7 +9,7 @@ namespace PuzzleBoard.Domain.Interfaces;
 /// </summary>
 public interface IDecisionMaker
 {
-    void Configure(IBoard board, IRelatableWordsDictionary dictionary);
+    void Configure(IBoardWrite boardWrite, IRelatableWordsDictionary dictionary);
     bool IsTimeToAttemptBlattingWord();
     bool IsTimeToTryAddingWord();
     public void AssessCircuitBreaker();

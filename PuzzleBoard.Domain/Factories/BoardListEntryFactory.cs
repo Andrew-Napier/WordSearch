@@ -12,18 +12,22 @@ public class BoardListEntryFactory : IBoardListEntryFactory
         return new BoardListEntry(word, position);
     }
 
-    public IBoardListEntry Create(BoardListEntry entry)
+    public IBoardListEntry Create(BoardListEntryPoco entry)
     {
         // TODO: This smells.  Is this just a copier for IBoardListEntry?
-        var position = new StartingPosition(
-            entry.GetPosition());
+        var position = new StartingPosition(entry.Row, entry.Column, entry.Directions);
            
-        return new BoardListEntry(entry.GetWord(), position);
+        return new BoardListEntry(entry.Word, position);
     }
 
-    public BoardListEntry Transform(IBoardListEntry entry)
+    public BoardListEntryPoco Transform(IBoardListEntry entry)
     {
-        // TODO: Not sure IBoardListEntry <==> BoardListEntry is still necessary
-        return new BoardListEntry(entry.GetWord(), entry.GetPosition());
+        return new BoardListEntryPoco
+        {
+            Word = entry.GetWord(), 
+            Column = entry.GetPosition().Col, 
+            Row = entry.GetPosition().Row, 
+            Directions = entry.GetPosition().Direction
+        };
     }
 }

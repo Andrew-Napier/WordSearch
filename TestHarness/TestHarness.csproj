@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PuzzleBoard.Application\PuzzleBoard.Application.csproj" />
+    <ProjectReference Include="..\PuzzleBoard.Infrastructure\PuzzleBoard.Infrastructure.csproj" />
     <ProjectReference Include="..\WordChooser\WordChooser.csproj" />
     <ProjectReference Include="..\PuzzleBoard\PuzzleBoard.csproj" />
     <ProjectReference Include="..\PuzzleStorage\PuzzleStorage.csproj" />

@@ -9,7 +9,7 @@ namespace PuzzleBoard;
 
 public class PuzzleGenerator
 {
-    private IBoard _lettersGrid;
+    private IBoardWrite _lettersGrid;
     private PlacementChecker _placeGenerator;
     private IRelatableWordsDictionary _wordGenerator;
     private IDecisionMaker _decisionMaker;
@@ -20,7 +20,7 @@ public class PuzzleGenerator
     private List<string> _rejectedWords = new List<string>();
 
     public PuzzleGenerator(
-        IBoard lettersGrid,
+        IBoardWrite lettersGrid,
         PlacementChecker placeGenerator,
         IPuzzleSize puzzleSize,
         IRelatableWordsDictionary relatableWordsDictionary,
@@ -39,7 +39,7 @@ public class PuzzleGenerator
         this._wordsToFind = wordsToFind;
     }
 
-    public IBoard Execute()
+    public IBoardWrite Execute()
     {
 
         int blankSpaces = _lettersGrid.BlanksRemaining();
@@ -65,7 +65,7 @@ public class PuzzleGenerator
         return _lettersGrid;
     }
 
-    private IBoard AttemptBlattingWord(IBoard lettersGrid, IRelatableWordsDictionary wordGenerator)
+    private IBoardWrite AttemptBlattingWord(IBoardWrite lettersGrid, IRelatableWordsDictionary wordGenerator)
     {
         int length = lettersGrid.BlanksRemaining();
         if (wordGenerator.IsWordAvailable(length))
@@ -76,7 +76,7 @@ public class PuzzleGenerator
         return lettersGrid;
     }
 
-    private IBoard AttemptAddingWord(IBoard lettersGrid, IRelatableWordsDictionary wordGenerator)
+    private IBoardWrite AttemptAddingWord(IBoardWrite lettersGrid, IRelatableWordsDictionary wordGenerator)
     {
         int wordLength = _random.PickWeightedWordLength();
         if (!GetApproximateWordLength(ref wordLength, wordGenerator)) return lettersGrid;

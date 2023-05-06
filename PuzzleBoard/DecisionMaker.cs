@@ -7,7 +7,7 @@ public class DecisionMaker : IDecisionMaker
 {
     private IRelatableWordsDictionary? _dictionary;
     private IBoardList? _wordCollection;
-    private IBoard? _board;
+    private IBoardWrite? _board;
     private IPuzzleSize _puzzleSize;
 
 
@@ -16,10 +16,10 @@ public class DecisionMaker : IDecisionMaker
         _puzzleSize = puzzleSize;
     }
 
-    public void Configure(IBoard board, IRelatableWordsDictionary dictionary)
+    public void Configure(IBoardWrite boardWrite, IRelatableWordsDictionary dictionary)
     {
-        _board = board;
-        _wordCollection = board.List();
+        _board = boardWrite;
+        _wordCollection = boardWrite.List();
         _dictionary = dictionary;
     }
 
@@ -29,7 +29,7 @@ public class DecisionMaker : IDecisionMaker
         if (_board == null || _dictionary == null)
         {
             throw new PuzzleException(
-                "Board or dictionary is missing.",
+                "BoardWrite or dictionary is missing.",
                 PuzzleExceptionRanking.noRetry);
         }
 

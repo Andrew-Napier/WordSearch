@@ -9,7 +9,7 @@ public class BoardSaver
 {
     private readonly BoardStorage _store;
 
-    public BoardSaver(IBoard puzzle, IBoardListEntryFactory factory)
+    public BoardSaver(IBoardWrite puzzle, IBoardListEntryFactory factory)
     {
         _store = new BoardStorage();
         _store.Answer = puzzle.List().GetBlattedWord();

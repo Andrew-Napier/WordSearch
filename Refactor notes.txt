@@ -1,2 +1,34 @@
 Refactor notes
+
 BoardListEntry : IBoardListEntry
+
+
+public class BoardListEntryPoco
+{
+    [JsonPropertyName("W")]
+    public string Word { get; set; } = string.Empty;
+    [JsonPropertyName("C")]
+    public int Column { get; set; }
+    [JsonPropertyName("R")]
+    public int Row { get; set; }
+    [JsonPropertyName("D")]
+    public WordDirections Directions { get; set; }
+}
+
+public class BoardListEntry : IBoardListEntry
+{
+    private string word;
+    private StartingPosition position;
+
+    public BoardListEntry(string word, StartingPosition position)
+    {
+        this.word = word;
+        this.position = position;
+    }
+
+    public WordDirections Directions { get; internal set; }
+
+    public StartingPosition GetPosition() => this.position;
+
+    public string GetWord() => this.word;
+}
